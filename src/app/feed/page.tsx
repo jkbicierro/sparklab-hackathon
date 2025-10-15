@@ -52,7 +52,7 @@ export default function Feed() {
   return (
     <>
       {/* ACTION BUTTONS */}
-      <div className="absolute  m-5">
+      <div className="relative m-5">
         <div
           className="w-10 h-10 flex items-center justify-center rounded-full absolute bottom-30 right-0"
           style={{
@@ -104,7 +104,7 @@ export default function Feed() {
           <div className="flex flex-col  gap-2">
             <div className="flex gap-3 items-center ">
               <AvatarSelector />
-              <div className="flex flex-col  ">
+              <div className="flex flex-col ">
                 <span className="font-medium text-sm">
                   {/* {user?.username} */} User
                 </span>
