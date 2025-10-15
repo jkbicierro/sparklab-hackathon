@@ -1,5 +1,6 @@
 import { db } from "@/db";
 import { posts } from "@/db/schema";
+import { desc, eq } from "drizzle-orm";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -27,6 +28,37 @@ export async function POST(req: NextRequest) {
     );
   } catch (err) {
     console.error("Error in POST request:", err);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const type = searchParams.get("type");
+
+    let data;
+    if (type) {
+      data = await db
+        .select()
+        .from(posts)
+        .where(eq(posts.type, type))
+        .orderBy(desc(posts.created_at))
+        .limit(50);
+    } else {
+      data = await db
+        .select()
+        .from(posts)
+        .orderBy(desc(posts.created_at))
+        .limit(50);
+    }
+
+    return NextResponse.json({ posts: data }, { status: 200 });
+  } catch (err) {
+    console.error("Error in GET /api/posts:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },

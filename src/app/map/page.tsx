@@ -1,38 +1,19 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
-import { Button } from "@/components/ui/button";
 import "mapbox-gl/dist/mapbox-gl.css";
 import ReactDOMServer from "react-dom/server";
 import Image from "next/image";
-import {
-  Calendar,
-  Flag,
-  MapPin,
-  Megaphone,
-  MessageCircle,
-  Plus,
-} from "lucide-react";
-import AvatarSelector from "@/components/ui/randomized-avatar";
-import Description from "@/components/description";
-import Feed from "../feed/page";
+import { Feed } from "@/components/block/feed";
 
-const TEST_COORDS = [
-  { longitude: 123.183874, latitude: 13.631545 },
-  { longitude: 123.1962, latitude: 13.6401 },
-  { longitude: 123.1715, latitude: 13.6209 },
-  { longitude: 123.1908, latitude: 13.6153 },
-  { longitude: 123.1764, latitude: 13.6467 },
-];
-
-export default function Map() {
+export default function MapPage() {
   return (
     <>
       <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row">
         {/* Sidebar */}
-        {/* <div className="z-99 fixed bottom-0 h-[70px] w-full lg:h-dvh lg:w-[350px] bg-background"> */}
-        <div className="z-99 fixed left-0 bottom-0 h-full w-full lg:h-dvh lg:w-[550px] bg-background p-3">
+
+        <div className="z-99 fixed left-0 bottom-0 h-full w-full lg:w-[400px] bg-background p-5">
           <Feed />
         </div>
 
@@ -44,6 +25,14 @@ export default function Map() {
     </>
   );
 }
+
+const TEST_COORDS = [
+  { longitude: 123.183874, latitude: 13.631545 },
+  { longitude: 123.1962, latitude: 13.6401 },
+  { longitude: 123.1715, latitude: 13.6209 },
+  { longitude: 123.1908, latitude: 13.6153 },
+  { longitude: 123.1764, latitude: 13.6467 },
+];
 
 const ReportMarker = () => {
   return (
