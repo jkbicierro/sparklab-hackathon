@@ -22,7 +22,7 @@ export default function MarkerDrawer({
   return (
     <div>
       <Drawer>
-        <DrawerTrigger>{children}</DrawerTrigger>
+        <DrawerTrigger asChild>{children}</DrawerTrigger>
         <DrawerContent className="flex flex-col items-center pb-[150px] px-[20px]">
           <DrawerHeader>
             <DrawerTitle></DrawerTitle>
