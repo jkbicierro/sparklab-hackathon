@@ -288,7 +288,7 @@ function FloatingActions({ isFull }: ActionProps) {
 
   return (
     <div
-      className={`z-3 fixed ${isFull ? "bottom-3" : "bottom-55"} right-6 flex flex-col items-end space-y-2  transition-all duration-500 ease-in-out`}
+      className={`z-3 fixed ${isFull ? "bottom-3" : "bottom-55"} lg:bottom-7 right-6 flex flex-col items-end space-y-2  transition-all duration-500 ease-in-out`}
     >
       {open && (
         <div className="fixed -inset-10 bg-black/50 -z-50 animate-in fade-in-0 fade-out-0 duration-500 "></div>

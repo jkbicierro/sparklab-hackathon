@@ -65,7 +65,7 @@ export default function MapPage() {
       <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row">
         {/* Sidebar */}
         <div
-          className={`z-5 fixed left-0 bottom-0 ${isFull ? "h-full" : "h-[200px]"} lg:h-full w-full lg:w-[400px] bg-background p-5  rounded-t-4xl lg:rounded-none   transition-all duration-500 ease-in-out`}
+          className={`z-5 fixed left-0 bottom-0 ${isFull ? "h-full" : "h-[200px]"} lg:h-full w-full lg:w-[400px] bg-background p-5  ${isFull ? "rounded-none" : "rounded-t-4xl"} lg:rounded-none   transition-all duration-500 ease-in-out`}
         >
           <div className="flex justify-center ">
             <div
