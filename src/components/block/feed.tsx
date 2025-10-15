@@ -208,8 +208,8 @@ export function Feed({ posts, activeKey, setActiveKey }: FeedProps) {
                       <Image
                         src={`https://hucsiehmwkqjkfxwxnfn.supabase.co/storage/v1/object/public/posts/${post.image_url}`}
                         alt={""}
-                        width={1920}
-                        height={1080}
+                        width={700}
+                        height={700}
                         className="object-cover"
                       />
                     </div>
