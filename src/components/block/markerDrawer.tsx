@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Drawer,
   DrawerClose,
@@ -13,16 +13,21 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "../ui/badge";
 import { Flag, MapPin } from "lucide-react";
+import { Post } from "@/lib/model/post";
 
-export default function MarkerDrawer({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+interface DrawerState {
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  post: Post | null
+}
+
+export default function MarkerDrawer({open, setOpen, post}: DrawerState) {
+
+    console.log(post);
   return (
     <div>
-      <Drawer>
-        <DrawerTrigger asChild>{children}</DrawerTrigger>
+      <Drawer open={open} onOpenChange={setOpen}>
+        {/* <DrawerTrigger asChild>{children}</DrawerTrigger> */}
         <DrawerContent className="flex flex-col items-center pb-[150px] px-[20px]">
           <DrawerHeader>
             <DrawerTitle></DrawerTitle>
@@ -39,7 +44,7 @@ export default function MarkerDrawer({
               </Avatar>
 
               <div className="flex flex-col">
-                <span>Romar Castro</span>
+                <span>Anon</span>
                 <span className="text-xs text-slate-400">23m ago</span>
               </div>
             </div>
@@ -51,7 +56,7 @@ export default function MarkerDrawer({
               </Badge>
               <Badge variant={"destructive"}>
                 <Flag />
-                Report
+                {post?.type}
               </Badge>
             </div>
 
@@ -59,9 +64,7 @@ export default function MarkerDrawer({
             <div className="mt-5">
               <h5>Report Details</h5>
               <p className="text-slate-400">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Curabitur elementum leo eget velit ultricies, in porta libero
-                consectetur. Maecenas placerat rutrum mi nec pulvinar.
+                {post?.details}
               </p>
 
               <div className="mt-5 flex gap-10">
@@ -82,7 +85,7 @@ export default function MarkerDrawer({
                 {/* Card */}
                 <div className="flex flex-col gap-1 px-4 py-3 bg-amber-100 text-amber-700 rounded-2xl">
                   <span>Pending</span>
-                  <span className="text-xs">June 10, 2025</span>
+                  <span className="text-xs">{post?.created_at}</span>
                 </div>
               </div>
             </div>
