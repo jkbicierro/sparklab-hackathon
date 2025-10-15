@@ -6,4 +6,5 @@ export type Post = {
   longitude: number | null;
   latitude: number | null;
   created_at: string;
+  image_url: string;
 };

@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { Post } from "@/lib/model/post";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
+import { Input } from "../ui/input";
 
 interface Tab {
   key: number;
@@ -128,7 +129,10 @@ export function Feed({ posts, activeKey, setActiveKey }: FeedProps) {
           <div className="text-sm text-muted-foreground">No posts found.</div>
         ) : (
           filteredItems.map((post) => (
-            <div key={post.post_id} className="bg-slate-50 rounded-2xl p-3">
+            <div
+              key={post.post_id}
+              className="bg-slate-50 rounded-2xl p-3 animate-in fade-in-0 duration-500"
+            >
               <div className="flex items-center justify-between  mb-4">
                 <div className="flex flex-col  gap-2 w-full">
                   {/* Avatar */}
@@ -199,6 +203,19 @@ export function Feed({ posts, activeKey, setActiveKey }: FeedProps) {
                       {post.type ?? "Post"}
                     </Badge>
                   </div>
+                  {post.image_url ? (
+                    <div className="mt-4 h-[200px] w-full overflow-clip rounded-md ">
+                      <Image
+                        src={`https://hucsiehmwkqjkfxwxnfn.supabase.co/storage/v1/object/public/posts/${post.image_url}`}
+                        alt={""}
+                        width={1920}
+                        height={1080}
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
 
                   {/* Description */}
                   <div>
@@ -224,21 +241,39 @@ export function Feed({ posts, activeKey, setActiveKey }: FeedProps) {
 function FloatingActions() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const [files, setFiles] = useState<File[] | undefined>();
+  const [filePreview, setFilePreview] = useState<string | undefined>();
+  function HandleFiles(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = event.target.files;
 
+    if (files && files.length > 0) {
+      setFiles(Array.from(files));
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (typeof e.target?.result === "string") {
+          setFilePreview(e.target.result);
+        }
+      };
+      reader.readAsDataURL(files[0]);
+      router.push("/post");
+    }
+  }
   const actions = [
+    // {
+    //   icon: <Map size={20} />,
+    //   label: "Map",
+    //   color: "bg-[#79c67d]",
+    //   route: "/map",
+    // },
     {
-      icon: <Map size={20} />,
-      label: "Map",
-      color: "bg-[#79c67d]",
-      route: "/map",
-    },
-    {
+      name: "photo",
       icon: <Img size={20} />,
       label: "Upload Photo",
       color: "bg-[#2e9dff]",
-      route: "/img",
+      route: "",
     },
     {
+      name: "post",
       icon: <Plus size={20} />,
       label: "Write Post",
       color: "bg-[#2e9dff]",
@@ -248,6 +283,9 @@ function FloatingActions() {
 
   return (
     <div className="z-3 fixed bottom-6 right-6 flex flex-col items-end space-y-2">
+      {open && (
+        <div className="fixed -inset-10 bg-black/50 -z-50 animate-in fade-in-0 fade-out-0 duration-500 "></div>
+      )}
       <AnimatePresence>
         {open &&
           actions.map((action, i) => (
@@ -260,18 +298,36 @@ function FloatingActions() {
               className="relative"
             >
               {/* Tooltip */}
-              <div className="text-right absolute w-30 right-17 top-1/2 -translate-y-1/2 font-medium text-gray-800 text-md  py-1 rounded-md group-hover:opacity-100 transition">
+              <div className="text-right absolute w-30 right-17 top-1/2 -translate-y-1/2 font-medium text-gray-200 text-md  py-1 rounded-md group-hover:opacity-100 transition">
                 {action.label}
               </div>
 
               {/* Action Button */}
-              <button
-                onClick={() => router.push(`${action.route}`)}
-                className={`group w-14 h-14 flex items-center justify-center cursor-pointer hover:opacity-70 transition rounded-full shadow-lg text-white ${action.color}`}
-                title={action.label}
-              >
-                {action.icon}
-              </button>
+              {action.name === "photo" ? (
+                <>
+                  <Input
+                    id="picture"
+                    type="file"
+                    className="hidden"
+                    onChange={HandleFiles}
+                  />
+                  <label
+                    htmlFor="picture"
+                    className={`group w-14 h-14 flex items-center justify-center cursor-pointer hover:opacity-70 transition rounded-full shadow-lg text-white ${action.color}`}
+                    title={action.label}
+                  >
+                    {action.icon}
+                  </label>
+                </>
+              ) : (
+                <button
+                  onClick={() => router.push(`${action.route}`)}
+                  className={`group w-14 h-14 flex items-center justify-center cursor-pointer hover:opacity-70 transition rounded-full shadow-lg text-white ${action.color}`}
+                  title={action.label}
+                >
+                  {action.icon}
+                </button>
+              )}
             </motion.div>
           ))}
       </AnimatePresence>

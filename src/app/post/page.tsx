@@ -10,6 +10,7 @@ import { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import LocationPicker from "@/components/ui/locationPicker";
+import { v4 as uuidv4 } from "uuid";
 
 export default function PostPage() {
   const supabase = createClient();
@@ -67,21 +68,23 @@ export default function PostPage() {
   async function ButtonAction() {
     if (isSubmitting) return;
     const { data, error } = await supabase.auth.getUser();
+
     if (error || !data.user) {
       toast.error("You must be signed in to post.");
       return;
     }
 
     const currentUserId = data.user.id;
+
     // Validation (strict subtopic required)
     if (!location) {
       toast.warning("Please select a subtopic.");
       return;
     }
-    // if (!files || files.length === 0) {
-    //   toast.warning("No files selected.");
-    //   return;
-    // }
+    if (!files || files.length === 0) {
+      toast.warning("No files selected.");
+      return;
+    }
 
     if (!desc) {
       toast.warning("No description. Please add a description.");
@@ -91,57 +94,74 @@ export default function PostPage() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: userId,
-          details: desc,
-          longitude: location.lng.toFixed(5),
-          latitude: location.lat.toFixed(5),
-          // image_url: filePath,
-        }),
-      });
+      for (const file of files) {
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${uuidv4()}.${fileExt}`;
+        const filePath = `${fileName}`;
 
-      const data = await res.json();
-      if (res.ok) {
-        toast.success(
-          <span>
-            Reported Successfully
-            {/* <Link
+        const { error: uploadError } = await supabase.storage
+          .from("posts")
+          .upload(filePath, file, { cacheControl: "3600", upsert: false });
+
+        if (uploadError) {
+          console.error("Upload error:", uploadError.message);
+          toast.error("Failed to upload image. Please try again.");
+          return;
+        }
+
+        console.log("Supabase user:", currentUserId, error);
+        const res = await fetch("/api/posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: userId,
+            details: desc,
+            longitude: location.lng.toFixed(5),
+            latitude: location.lat.toFixed(5),
+            image_url: filePath,
+          }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          toast.success(
+            <span>
+              Reported Successfully
+              {/* <Link
                 href="/memes/profile"
                 className="underline hover:text-primary"
               >
                 View Meme
               </Link> */}
-          </span>,
-        );
-        // Reset form
+            </span>,
+          );
+          // Reset form
 
-        setDesc("");
+          setDesc("");
 
-        setFiles(undefined);
-        setFiles(undefined);
-        setFilePreview(undefined);
-      } else {
-        toast.error(data.error || "Failed to create meme. Please try again.");
+          setFiles(undefined);
+          setFiles(undefined);
+          setFilePreview(undefined);
+        } else {
+          toast.error(data.error || "Failed to create meme. Please try again.");
+        }
+        // for (const file of files) {
+        //   // const fileExt = file.name.split(".").pop();
+        //   // const fileName = `${uuidv4()}.${fileExt}`;
+        //   // const filePath = `${fileName}`;
+
+        //   // const { error: uploadError } = await supabase.storage
+        //   //   .from("memes")
+        //   //   .upload(filePath, file, { cacheControl: "3600", upsert: false });
+
+        //   // if (uploadError) {
+        //   //   console.error("Upload error:", uploadError.message);
+        //   //   toast.error("Failed to upload image. Please try again.");
+        //   //   return;
+        //   // }
+
+        // }
       }
-      // for (const file of files) {
-      //   // const fileExt = file.name.split(".").pop();
-      //   // const fileName = `${uuidv4()}.${fileExt}`;
-      //   // const filePath = `${fileName}`;
-
-      //   // const { error: uploadError } = await supabase.storage
-      //   //   .from("memes")
-      //   //   .upload(filePath, file, { cacheControl: "3600", upsert: false });
-
-      //   // if (uploadError) {
-      //   //   console.error("Upload error:", uploadError.message);
-      //   //   toast.error("Failed to upload image. Please try again.");
-      //   //   return;
-      //   // }
-
-      // }
     } catch (error) {
       console.error("Submission error:", error);
       toast.error("An error occurred. Please try again.");
@@ -152,7 +172,7 @@ export default function PostPage() {
 
   return (
     <>
-      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh bg-background p-3 flex flex-col overflow-y-scroll items-center">
+      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh bg-background p-3 flex flex-col overflow-y-scroll items-center animate-in fade-in-0 duration-800">
         <span className="text-xl mb-[40px] font-semibold text-primary">
           Report
         </span>
