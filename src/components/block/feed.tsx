@@ -74,9 +74,13 @@ const TabsArray: Tab[] = [
   },
 ];
 
-export function Feed({ posts }: { posts: Post[] }) {
-  const [activeKey, setActiveKey] = useState<number>(0);
+type FeedProps = {
+  posts: Post[];
+  activeKey: number;
+  setActiveKey: (key: number) => void;
+};
 
+export function Feed({ posts, activeKey, setActiveKey }: FeedProps) {
   const activeTab = TabsArray.find((t) => t.key === activeKey);
   const filteredItems = posts.filter((p) =>
     activeTab?.filterType ? p.type === activeTab.filterType : true,
@@ -243,7 +247,7 @@ function FloatingActions() {
   ];
 
   return (
-    <div className="fixed bottom-6 right-6 flex flex-col items-end space-y-2">
+    <div className="z-3 fixed bottom-6 right-6 flex flex-col items-end space-y-2">
       <AnimatePresence>
         {open &&
           actions.map((action, i) => (
@@ -313,7 +317,7 @@ function ScrollableTabs({
       {/* Left Arrow */}
       <button
         onClick={() => scroll("left")}
-        className="absolute left-0 top-5 z-10 p-2 bg-white dark:bg-gray-900 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
+        className="absolute left-0 top-5 z-2 p-2 bg-white dark:bg-gray-900 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
       >
         <ChevronLeft size={20} />
       </button>
@@ -342,7 +346,7 @@ function ScrollableTabs({
       {/* Right Arrow */}
       <button
         onClick={() => scroll("right")}
-        className="absolute right-0 top-5 z-10 p-2 bg-white dark:bg-gray-900 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
+        className="absolute right-0 top-5 z-2 p-2 bg-white dark:bg-gray-900 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
       >
         <ChevronRight size={20} />
       </button>

@@ -18,6 +18,7 @@ const TEST_COORDS = [
 
 export default function MapPage() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [activeKey, setActiveKey] = useState<number>(0);
 
   useEffect(() => {
     async function loadPosts() {
@@ -41,7 +42,7 @@ export default function MapPage() {
       <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row">
         {/* Sidebar */}
         <div className="z-99 fixed left-0 bottom-0 h-[400px] lg:h-full w-full lg:w-[400px] bg-background p-5  rounded-t-4xl lg:rounded-none">
-          <Feed posts={posts} />
+          <Feed posts={posts} activeKey={activeKey} setActiveKey={setActiveKey} />
         </div>
 
         {/* Map */}

@@ -1,14 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { Button } from "@/components/ui/button";
 import AvatarSelector from "@/components/ui/randomized-avatar";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Image as Img, Moon, Sun, Loader2 } from "lucide-react";
+import { Image as Img, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
 import { Session } from "@supabase/supabase-js";
-import { v4 as uuidv4 } from "uuid";
-
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import LocationPicker from "@/components/ui/locationPicker";
@@ -154,11 +152,11 @@ export default function PostPage() {
 
   return (
     <>
-      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh  bg-background p-3 flex flex-col  overflow-y-scroll items-center">
+      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh bg-background p-3 flex flex-col overflow-y-scroll items-center">
         <span className="text-xl mb-[40px] font-semibold text-primary">
           Report
         </span>
-        <div className="space-y-[16px] l">
+        <div className="space-y-[16px]">
           <div className="flex gap-3 items-center">
             <AvatarSelector />
             <div className="flex flex-col ">
