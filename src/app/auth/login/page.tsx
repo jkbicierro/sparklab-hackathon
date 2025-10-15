@@ -16,6 +16,9 @@ export default async function LoginPage() {
         <div className="w-[350px] space-y-5">
           <h2>Welcome back!</h2>
           <LoginForm />
+          <small>
+            Don&apos;t have an account? <a href="/auth/signup">Sign up</a>
+          </small>
         </div>
       </main>
     </>

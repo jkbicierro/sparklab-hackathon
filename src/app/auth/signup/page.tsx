@@ -22,6 +22,9 @@ export default async function RegisterPage() {
         <div className="w-[350px] space-y-5">
           <h2>Let&apos;s get you registered!</h2>
           <RegisterForm />
+          <small>
+            already have an account? <a href="/auth/login">Log in</a>
+          </small>
         </div>
       </main>
     </>
