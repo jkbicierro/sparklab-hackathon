@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 
 export default async function RegisterPage() {
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect("/auth/login");
-  } else {
+  const { data } = await supabase.auth.getUser();
+
+  if (data?.user) {
     redirect("/map");
   }
+
   return (
     <>
       <main className="h-dvh flex flex-col items-center justify-center">

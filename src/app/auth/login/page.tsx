@@ -1,19 +1,12 @@
 import { LoginForm } from "@/components/forms/loginForm";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Login - OpenBayan",
-  description: "Login to your OpenBayan account",
-};
 
 export default async function LoginPage() {
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect("/auth/login");
-  } else {
+  const { data } = await supabase.auth.getUser();
+
+  if (data?.user) {
     redirect("/map");
   }
 
