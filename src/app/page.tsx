@@ -16,13 +16,14 @@ import { Button } from "@/components/ui/button";
 import { Map } from "lucide-react";
 import Link from "next/link";
 import { NotificationList } from "@/components/magicui/notification";
+import MarkerDrawer from "@/components/block/markerDrawer";
 
 export default function Home() {
   return (
     <>
       <NavBar />
       <main className="px-[150px]">
-        <section className="py-[150px]">
+        {/* <section className="py-[150px]">
           <div className="flex justify-between items-center">
             <div className="w-[450px] space-y-5">
               <h1>Unite Voices. Empower Change.</h1>
@@ -44,6 +45,12 @@ export default function Home() {
               <NotificationList />
             </div>
           </div>
+        </section> */}
+
+        <section className="py-[150px]">
+          <MarkerDrawer>
+            <Button>Open Marker Drawer</Button>
+          </MarkerDrawer>
         </section>
       </main>
     </>
