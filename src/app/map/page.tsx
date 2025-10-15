@@ -38,7 +38,6 @@ export default function MapPage() {
   const [activeKey, setActiveKey] = useState<number>(0);
 
   useEffect(() => {
-    requestLocationPermission();
     async function loadPosts() {
       try {
         const res = await fetch("/api/posts");
@@ -56,26 +55,6 @@ export default function MapPage() {
     }
     loadPosts();
   }, []);
-
-  function requestLocationPermission() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log("Location permission granted!");
-          console.log("Latitude:", position.coords.latitude);
-          console.log("Longitude:", position.coords.longitude);
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          if (error.code === error.PERMISSION_DENIED) {
-            alert("Please allow location access in your browser settings.");
-          }
-        },
-      );
-    } else {
-      alert("Geolocation is not supported by your browser.");
-    }
-  }
 
   if (loading) {
     return <div>Loading</div>;
@@ -102,8 +81,6 @@ export default function MapPage() {
 }
 
 function MapBox({ posts, activeKey }: { posts: Post[]; activeKey: number }) {
-  console.log(activeKey);
-
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
@@ -131,6 +108,16 @@ function MapBox({ posts, activeKey }: { posts: Post[]; activeKey: number }) {
         maxZoom: 18,
         attributionControl: false,
       });
+
+      mapRef.current.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true,
+          },
+          trackUserLocation: true,
+          showUserHeading: true,
+        }),
+      );
 
       mapRef.current.on("load", () => {
         setMapLoading(false);
@@ -190,6 +177,7 @@ function Marker({ id, map, coords, handleSelectMarker, type }: MarkerProps) {
 
   const markerEl = document.createElement("div");
   markerEl.addEventListener("click", () => handleSelectMarker(id));
+  markerEl.className = "cursor-pointer";
 
   const markerRef = useRef<mapboxgl.Marker | null>(null);
   const contentRef = useRef(markerEl);
