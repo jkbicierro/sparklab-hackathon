@@ -113,6 +113,9 @@ function MapBox() {
         style: "mapbox://styles/mapbox/standard",
         center: [longitude, latitude],
         zoom: 16,
+        minZoom: 12,
+        maxZoom: 18,
+        attributionControl: false,
       });
 
       const report = document.createElement("div");

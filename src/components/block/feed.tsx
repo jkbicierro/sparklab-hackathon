@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -18,6 +19,8 @@ import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Post } from "@/lib/model/post";
+import { Badge } from "../ui/badge";
+import Image from "next/image";
 
 interface Tab {
   key: number;
@@ -83,14 +86,22 @@ export function Feed({ posts }: { posts: Post[] }) {
     <>
       {/* Action Buttons */}
       <FloatingActions />
-      <div className="mb-2">
-        <span className="text-primary text-2xl font-semibold ">Feed</span>
+      <div className="mb-2 flex items-center gap-2">
+        {/* Logo */}
+        <Image
+          src={"/assets/vibebayan-logo.png"}
+          alt="VibeBayan Logo"
+          width={700}
+          height={700}
+          className="w-[40px] h-[40px]"
+        />
+        <span className="text-primary text-2xl font-semibold">Feed</span>
       </div>
 
       {/* Location Input */}
-      <div className="flex gap-1 p-3 items-center bg-slate-50 text-accent-foreground/40 rounded-full">
-        <MapPin size={16} />
-        <span>Current Location</span>
+      <div className="flex items-center gap-2 px-4 py-3 bg-slate-50 text-slate-700 rounded-full cursor-pointer">
+        <MapPin size={14} />
+        <span className="text-sm">Current Location</span>
       </div>
 
       {/* Tab Filtering */}
@@ -101,12 +112,12 @@ export function Feed({ posts }: { posts: Post[] }) {
       />
 
       {/* Posts */}
-      <div className="space-y-3">
+      <div className="space-y-3 max-h-[75vh] overflow-y-auto">
         {filteredItems.length === 0 ? (
           <div className="text-sm text-muted-foreground">No posts found.</div>
         ) : (
           filteredItems.map((post) => (
-            <div key={post.post_id} className="bg-slate-50 rounded-md p-3">
+            <div key={post.post_id} className="bg-slate-50 rounded-2xl p-3">
               <div className="flex items-center justify-between  mb-4">
                 <div className="flex flex-col  gap-2 w-full">
                   {/* Avatar */}
@@ -115,8 +126,64 @@ export function Feed({ posts }: { posts: Post[] }) {
 
                     <div className="flex flex-col ">
                       <span className="font-medium text-sm">User</span>
-                      <span className="text-xs text-zinc-400">Recently</span>
+                      <span className="text-xs text-zinc-400">
+                        {(() => {
+                          const date = new Date(post.created_at as any);
+                          if (isNaN(date.getTime())) return "";
+                          const diff = Date.now() - date.getTime();
+                          const s = Math.floor(diff / 1000);
+                          if (s < 60) return `${s}s ago`;
+                          const m = Math.floor(s / 60);
+                          if (m < 60) return `${m} mins ago`;
+                          const h = Math.floor(m / 60);
+                          if (h < 24)
+                            return `${h} ${h === 1 ? "hr" : "hrs"} ago`;
+                          const d = Math.floor(h / 24);
+                          if (d < 7)
+                            return `${d} ${d === 1 ? "day" : "days"} ago`;
+                          const w = Math.floor(d / 7);
+                          if (w < 5)
+                            return `${w} ${w === 1 ? "wk" : "wks"} ago`;
+                          const mo = Math.floor(d / 30);
+                          if (mo < 12)
+                            return `${mo} ${mo === 1 ? "mo" : "mos"} ago`;
+                          const y = Math.floor(d / 365);
+                          return `${y} ${y === 1 ? "yr" : "yrs"} ago`;
+                        })()}
+                      </span>
                     </div>
+                  </div>
+
+                  {/* Post Meta */}
+                  <div className="flex gap-1 flex-wrap">
+                    <Badge
+                      style={{
+                        color: `var(${
+                          post.type === "Report"
+                            ? "--report-txt"
+                            : post.type === "Announcement"
+                              ? "--announcement-txt"
+                              : post.type === "Event"
+                                ? "--event-txt"
+                                : post.type === "Feedback"
+                                  ? "--feedback-txt"
+                                  : "--post-txt"
+                        })`,
+                        backgroundColor: `var(${
+                          post.type === "Report"
+                            ? "--report-bg"
+                            : post.type === "Announcement"
+                              ? "--announcement-bg"
+                              : post.type === "Event"
+                                ? "--event-bg"
+                                : post.type === "Feedback"
+                                  ? "--feedback-bg"
+                                  : "--post-bg"
+                        })`,
+                      }}
+                    >
+                      {post.type ?? "Post"}
+                    </Badge>
                   </div>
 
                   {/* Description */}
@@ -125,33 +192,10 @@ export function Feed({ posts }: { posts: Post[] }) {
                       <Description description={post.details ?? ""} />
                     </span>
                   </div>
-                  <div className="flex gap-3 flex-wrap">
-                    {/* Location */}
-                    <div
-                      className="flex items-center gap-2 p-2 px-3 rounded-full"
-                      style={{
-                        color: `var(--location-txt)`,
-                        backgroundColor: `var(--location-bg)`,
-                      }}
-                    >
-                      <MapPin size={16} />
-                      <span className="text-sm">
-                        {post.latitude?.toFixed?.(4)},{" "}
-                        {post.longitude?.toFixed?.(4)}
-                      </span>
-                    </div>
-                    {/* Type */}
-                    {post.type && (
-                      <div
-                        className="flex items-center gap-2 p-2 px-3 rounded-full"
-                        style={{
-                          color: `var(--location-txt)`,
-                          backgroundColor: `var(--location-bg)`,
-                        }}
-                      >
-                        <span className="text-sm">{post.type}</span>
-                      </div>
-                    )}
+
+                  <div className="flex items-center gap-1 text-xs text-slate-600">
+                    <MapPin size={14} /> {post.latitude?.toFixed?.(4)},{" "}
+                    {post.longitude?.toFixed?.(4)}
                   </div>
                 </div>
               </div>
@@ -202,7 +246,7 @@ function FloatingActions() {
               className="relative"
             >
               {/* Tooltip */}
-              <div className="text-right  absolute w-30 right-17 top-1/2 -translate-y-1/2 font-medium  text-gray-800 text-md  py-1 rounded-md group-hover:opacity-100 transition">
+              <div className="text-right absolute w-30 right-17 top-1/2 -translate-y-1/2 font-medium text-gray-800 text-md  py-1 rounded-md group-hover:opacity-100 transition">
                 {action.label}
               </div>
 
@@ -273,10 +317,10 @@ function ScrollableTabs({
           <button
             key={tab.key}
             onClick={() => onSelect(tab.key)}
-            className={`font-medium text-sm py-2 px-4 rounded-full flex items-center gap-3 hover:opacity-80 transition cursor-pointer whitespace-nowrap ${
+            className={`text-sm py-2 px-4 rounded-full flex items-center gap-3 hover:opacity-80 transition cursor-pointer whitespace-nowrap ${
               tab.key === activeKey
                 ? "bg-primary text-white"
-                : "bg-slate-100 text-slate-400"
+                : "bg-slate-50 text-slate-300"
             }`}
           >
             {tab.icon}
