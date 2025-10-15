@@ -11,6 +11,7 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ModeToggle } from "@/components/ui/modetoggle";
 
 export default function Home() {
   return (
@@ -49,6 +50,7 @@ function NavBar() {
             <AvatarImage src="https://github.com/jkbicierro.png" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
+          <ModeToggle />
         </div>
       </div>
     </nav>
