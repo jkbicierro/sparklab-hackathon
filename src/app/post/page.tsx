@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import AvatarSelector from "@/components/ui/randomized-avatar";
 import { Textarea } from "@/components/ui/textarea";
-import { Image as Img, Loader2 } from "lucide-react";
+import { ChevronLeft, Image as Img, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
 import { Session } from "@supabase/supabase-js";
@@ -11,11 +11,12 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import LocationPicker from "@/components/ui/locationPicker";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
 
 export default function PostPage() {
   const supabase = createClient();
   const [userId, setUserId] = useState<string>("");
-
+  const router = useRouter();
   useEffect(() => {
     async function getUser() {
       try {
@@ -172,8 +173,18 @@ export default function PostPage() {
 
   return (
     <>
-      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh bg-background p-3 flex flex-col overflow-y-scroll items-center animate-in fade-in-0 duration-800">
-        <span className="text-xl mb-[40px] font-semibold text-primary">
+      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh bg-background flex flex-col overflow-y-scroll p-20 animate-in fade-in-0 duration-800">
+        <div className="flex">
+          <div
+            onClick={() => router.push("/map")}
+            className=" text-primary bg-primary/10 p-3 px-5 rounded-full flex items-center gap-1 hover:bg-primary/30 transition cursor-pointer"
+          >
+            <ChevronLeft size={16} />
+            <span className="text-sm">Back</span>
+          </div>
+        </div>
+
+        <span className="text-xl my-[20px]  font-semibold text-primary">
           Report
         </span>
         <div className="space-y-[16px]">
