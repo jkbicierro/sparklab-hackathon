@@ -154,7 +154,7 @@ export default function PostPage() {
 
   return (
     <>
-      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh lg:w-[350px] bg-background p-3 flex flex-col  overflow-y-scroll">
+      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh  bg-background p-3 flex flex-col  overflow-y-scroll items-center">
         <span className="text-xl mb-[40px] font-semibold text-primary">
           Report
         </span>
@@ -162,7 +162,7 @@ export default function PostPage() {
           <div className="flex gap-3 items-center">
             <AvatarSelector />
             <div className="flex flex-col ">
-              <span className="font-medium text-sm">User</span>
+              <span className="font-medium text-sm">Anon</span>
               <span className="text-xs text-zinc-400">To all</span>
             </div>
           </div>
