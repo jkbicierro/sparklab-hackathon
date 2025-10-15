@@ -44,11 +44,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-[150px]">
-          <MarkerDrawer>
+        {/* <section className="py-[150px]"> */}
+          {/* <MarkerDrawer>
             <Button>Open Marker Drawer</Button>
-          </MarkerDrawer>
-        </section>
+          </MarkerDrawer> */}
+        {/* </section> */}
       </main>
     </>
   );
