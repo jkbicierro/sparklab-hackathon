@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Map } from "lucide-react";
 import Link from "next/link";
 import { NotificationList } from "@/components/magicui/notification";
+import MarkerDrawer from "@/components/block/markerDrawer";
 
 export default function Home() {
   return (
@@ -45,6 +46,12 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <section className="py-[150px]">
+          <MarkerDrawer>
+            <Button>Open Marker Drawer</Button>
+          </MarkerDrawer>
+        </section>
       </main>
     </>
   );
@@ -53,7 +60,7 @@ export default function Home() {
 function NavBar() {
   return (
     <>
-      <nav className="px-[150px] fixed top-0 w-full h-[70px] border-b">
+      <nav className="px-[150px] fixed top-0 w-full h-[70px] border-b z-[999] bg-background">
         <div className="w-full h-full flex items-center justify-between">
           {/* Logo */}
           <Image
