@@ -120,3 +120,31 @@
     @apply bg-background text-foreground;
   }
 }
+
+h1 {
+  @apply text-4xl lg:text-5xl font-semibold;
+}
+
+h2 {
+  @apply text-3xl lg:text-4xl font-semibold;
+}
+
+h3 {
+  @apply text-2xl lg:text-3xl font-semibold;
+}
+
+h4 {
+  @apply text-xl lg:text-2xl font-semibold;
+}
+
+h5 {
+  @apply text-lg lg:text-xl font-semibold;
+}
+
+p {
+  @apply text-base;
+}
+
+small {
+  @apply text-xs lg:text-sm;
+}
