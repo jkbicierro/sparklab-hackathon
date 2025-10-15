@@ -3,22 +3,15 @@ import {
   uuid,
   text,
   varchar,
-  integer,
   boolean,
   timestamp,
   real,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
-  user_id: uuid("user_id").primaryKey().defaultRandom(),
-
-  org_id: uuid("org_id")
-    .notNull()
-    .references(() => organizations.org_id, { onDelete: "cascade" }),
-
-  email: varchar("email", { length: 255 }),
-  password: varchar("password", { length: 255 }),
-  verification_status: boolean("verification_status"),
+  user_id: uuid("user_id").primaryKey(),
+  org_id: uuid("org_id").references(() => organizations.org_id),
+  verification_status: boolean("verification_status").default(false),
 });
 
 export const organizations = pgTable("organizations", {
@@ -34,7 +27,9 @@ export const posts = pgTable("posts", {
 
   user_id: uuid("user_id")
     .notNull()
-    .references(() => users.user_id, { onDelete: "cascade" }),
+    .references(() => users.user_id, {
+      onDelete: "cascade",
+    }),
 
   type: varchar("type", { length: 100 }),
   details: text("details"),
@@ -42,5 +37,5 @@ export const posts = pgTable("posts", {
   longitude: real("longitude"),
   latitude: real("latitude"),
 
-  created_at: timestamp("created_at"),
+  created_at: timestamp("created_at").defaultNow().notNull(),
 });
