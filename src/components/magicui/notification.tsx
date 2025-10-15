@@ -134,7 +134,7 @@ export function NotificationList({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative flex h-full w-full flex-col overflow-hidden",
+        "relative flex h-full w-full flex-col overflow-hidden p-2",
         className,
       )}
     >

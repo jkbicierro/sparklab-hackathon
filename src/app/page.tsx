@@ -60,7 +60,7 @@ export default function Home() {
 function NavBar() {
   return (
     <>
-      <nav className="px-[150px] fixed top-0 w-full h-[70px] border-b">
+      <nav className="px-[150px] fixed top-0 w-full h-[70px] border-b z-[999] bg-background">
         <div className="w-full h-full flex items-center justify-between">
           {/* Logo */}
           <Image
