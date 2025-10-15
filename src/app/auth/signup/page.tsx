@@ -2,6 +2,7 @@ import { RegisterForm } from "@/components/forms/registerForm";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Register - OpenBayan",
@@ -20,10 +21,17 @@ export default async function RegisterPage() {
     <>
       <main className="h-dvh flex flex-col items-center justify-center">
         <div className="w-[350px] space-y-5">
+          <Image
+            src={"/assets/vibebayan-logo.png"}
+            alt="VibeBayan Logo"
+            width={1000}
+            height={1000}
+            className="w-[40px] h-[40px]"
+          />
           <h2>Let&apos;s get you registered!</h2>
           <RegisterForm />
           <small>
-            already have an account? <a href="/auth/login">Log in</a>
+            Already have an account? <a href="/auth/login">Log in</a>
           </small>
         </div>
       </main>
