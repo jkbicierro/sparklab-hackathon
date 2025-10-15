@@ -41,3 +41,18 @@ export const posts = pgTable("posts", {
 
   created_at: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const advertistments = pgTable("advertistments", {
+  ads_id: uuid("advertistment_id").primaryKey().defaultRandom(),
+  business_name: varchar("business_name", { length: 255 }),
+  description: text("description"),
+  image_url: text("image_url"),
+  link: text("link"),
+
+  longitude: doublePrecision("longitude"),
+  latitude: doublePrecision("latitude"),
+
+  status: boolean("status").default(true),
+
+  created_at: timestamp("created_at").defaultNow().notNull(),
+});
