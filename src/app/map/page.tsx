@@ -32,7 +32,7 @@ export default function Map() {
       <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row">
         {/* Sidebar */}
         {/* <div className="z-99 fixed bottom-0 h-[70px] w-full lg:h-dvh lg:w-[350px] bg-background"> */}
-        <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh lg:w-[350px] bg-background p-3">
+        <div className="z-99 fixed left-0 bottom-0 h-full w-full lg:h-dvh lg:w-[550px] bg-background p-3">
           <Feed />
         </div>
 
