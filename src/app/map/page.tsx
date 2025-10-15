@@ -35,6 +35,7 @@ const keys = [
 export default function MapPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isFull, setFull] = useState(false);
   const [activeKey, setActiveKey] = useState<number>(0);
 
   useEffect(() => {
@@ -63,9 +64,18 @@ export default function MapPage() {
     <>
       <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row">
         {/* Sidebar */}
-        <div className="z-2 fixed left-0 bottom-0 h-[400px] lg:h-full w-full lg:w-[400px] bg-background p-5  rounded-t-4xl lg:rounded-none">
+        <div
+          className={`z-5 fixed left-0 bottom-0 ${isFull ? "h-full" : "h-[200px]"} lg:h-full w-full lg:w-[400px] bg-background p-5  rounded-t-4xl lg:rounded-none   transition-all duration-500 ease-in-out`}
+        >
+          <div className="flex justify-center ">
+            <div
+              className="p-1 bg-slate-200 rounded-full flex flex-col w-1/4 items-center cursor-pointer hover:bg-slate-300 transition lg:hidden"
+              onClick={() => setFull((prev) => !prev)}
+            />
+          </div>
           <Feed
             posts={posts}
+            isFull={isFull}
             activeKey={activeKey}
             setActiveKey={setActiveKey}
           />

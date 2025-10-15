@@ -77,11 +77,16 @@ const TabsArray: Tab[] = [
 
 type FeedProps = {
   posts: Post[];
+  isFull: boolean;
   activeKey: number;
   setActiveKey: (key: number) => void;
 };
 
-export function Feed({ posts, activeKey, setActiveKey }: FeedProps) {
+type ActionProps = {
+  isFull: boolean;
+};
+
+export function Feed({ posts, isFull, activeKey, setActiveKey }: FeedProps) {
   const activeTab = TabsArray.find((t) => t.key === activeKey);
   const filteredItems = posts.filter((p) =>
     activeTab?.filterType ? p.type === activeTab.filterType : true,
@@ -90,7 +95,7 @@ export function Feed({ posts, activeKey, setActiveKey }: FeedProps) {
   return (
     <>
       {/* Action Buttons */}
-      <FloatingActions />
+      <FloatingActions isFull={isFull} />
 
       <div className="mb-3 flex justify-between items-center">
         <div className="flex items-center gap-2">
@@ -238,7 +243,7 @@ export function Feed({ posts, activeKey, setActiveKey }: FeedProps) {
   );
 }
 
-function FloatingActions() {
+function FloatingActions({ isFull }: ActionProps) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const [files, setFiles] = useState<File[] | undefined>();
@@ -282,7 +287,9 @@ function FloatingActions() {
   ];
 
   return (
-    <div className="z-3 fixed bottom-6 right-6 flex flex-col items-end space-y-2">
+    <div
+      className={`z-3 fixed ${isFull ? "bottom-3" : "bottom-55"} right-6 flex flex-col items-end space-y-2  transition-all duration-500 ease-in-out`}
+    >
       {open && (
         <div className="fixed -inset-10 bg-black/50 -z-50 animate-in fade-in-0 fade-out-0 duration-500 "></div>
       )}
