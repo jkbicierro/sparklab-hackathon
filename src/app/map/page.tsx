@@ -3,9 +3,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import { Button } from "@/components/ui/button";
-import 'mapbox-gl/dist/mapbox-gl.css';
+import "mapbox-gl/dist/mapbox-gl.css";
 import ReactDOMServer from "react-dom/server";
-import Image from 'next/image'
+import Image from "next/image";
 import {
   Calendar,
   Flag,
@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import AvatarSelector from "@/components/ui/randomized-avatar";
 import Description from "@/components/description";
+import Feed from "../feed/page";
 
 const TEST_COORDS = [
   { longitude: 123.183874, latitude: 13.631545 },
@@ -31,9 +32,9 @@ export default function Map() {
       <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row">
         {/* Sidebar */}
         {/* <div className="z-99 fixed bottom-0 h-[70px] w-full lg:h-dvh lg:w-[350px] bg-background"> */}
-        {/* <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh lg:w-[350px] bg-background p-3"> */}
-          {/* <Feed /> */}
-        {/* </div> */}
+        <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh lg:w-[350px] bg-background p-3">
+          <Feed />
+        </div>
 
         {/* Map */}
         <div className="flex-1 h-[100dvh] w-[100dvw]">
@@ -45,20 +46,43 @@ export default function Map() {
 }
 
 const ReportMarker = () => {
-  return (<Image src="/report_marker.png" alt="Report marker" height={30} width={30}/>)
-}
+  return (
+    <Image
+      src="/report_marker.png"
+      alt="Report marker"
+      height={30}
+      width={30}
+    />
+  );
+};
 
 const AnnouncementMarker = () => {
-  return (<Image src="/announcement_marker.png" alt="Report marker" height={30} width={30}/>)
-}
+  return (
+    <Image
+      src="/announcement_marker.png"
+      alt="Report marker"
+      height={30}
+      width={30}
+    />
+  );
+};
 
 const FeedbackMarker = () => {
-  return (<Image src="/feedback_marker.png" alt="Report marker" height={30} width={30}/>)
-}
+  return (
+    <Image
+      src="/feedback_marker.png"
+      alt="Report marker"
+      height={30}
+      width={30}
+    />
+  );
+};
 
 const EventMarker = () => {
-  return (<Image src="/event_marker.png" alt="Report marker" height={30} width={30}/>)
-}
+  return (
+    <Image src="/event_marker.png" alt="Report marker" height={30} width={30} />
+  );
+};
 
 function MapBox() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -88,13 +112,15 @@ function MapBox() {
 
       report.innerHTML = ReactDOMServer.renderToString(<ReportMarker />);
       event.innerHTML = ReactDOMServer.renderToString(<EventMarker />);
-      announcement.innerHTML = ReactDOMServer.renderToString(<AnnouncementMarker />);
+      announcement.innerHTML = ReactDOMServer.renderToString(
+        <AnnouncementMarker />,
+      );
       feedback.innerHTML = ReactDOMServer.renderToString(<FeedbackMarker />);
 
       // TEST_COORDS.map((coord) => {
-        // new mapboxgl.Marker({ element: report.firstChild as HTMLElement })
-        // .setLngLat([coord.longitude,coord.latitude])
-        // .addTo(mapRef.current!);
+      // new mapboxgl.Marker({ element: report.firstChild as HTMLElement })
+      // .setLngLat([coord.longitude,coord.latitude])
+      // .addTo(mapRef.current!);
       // })
 
       new mapboxgl.Marker({ element: report.firstChild as HTMLElement })
