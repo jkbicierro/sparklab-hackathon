@@ -131,33 +131,36 @@ export function Feed({ posts }: { posts: Post[] }) {
                   <div className="flex gap-3 items-center ">
                     <AvatarSelector />
 
-                    <div className="flex flex-col ">
-                      <span className="font-medium text-sm">Anon</span>
-                      <span className="text-xs text-slate-400">
-                        {(() => {
-                          const date = new Date(post.created_at as any);
-                          if (isNaN(date.getTime())) return "";
-                          const diff = Date.now() - date.getTime();
-                          const s = Math.floor(diff / 1000);
-                          if (s < 60) return `${s}s ago`;
-                          const m = Math.floor(s / 60);
-                          if (m < 60) return `${m} mins ago`;
-                          const h = Math.floor(m / 60);
-                          if (h < 24)
-                            return `${h} ${h === 1 ? "hr" : "hrs"} ago`;
-                          const d = Math.floor(h / 24);
-                          if (d < 7)
-                            return `${d} ${d === 1 ? "day" : "days"} ago`;
-                          const w = Math.floor(d / 7);
-                          if (w < 5)
-                            return `${w} ${w === 1 ? "wk" : "wks"} ago`;
-                          const mo = Math.floor(d / 30);
-                          if (mo < 12)
-                            return `${mo} ${mo === 1 ? "mo" : "mos"} ago`;
-                          const y = Math.floor(d / 365);
-                          return `${y} ${y === 1 ? "yr" : "yrs"} ago`;
-                        })()}
-                      </span>
+                    <div className="w-full flex justify-between">
+                      {/* Author Info */}
+                      <div className="flex flex-col ">
+                        <span className="font-medium text-sm">Anon</span>
+                        <span className="text-xs text-slate-400">
+                          {(() => {
+                            const date = new Date(post.created_at as any);
+                            if (isNaN(date.getTime())) return "";
+                            const diff = Date.now() - date.getTime();
+                            const s = Math.floor(diff / 1000);
+                            if (s < 60) return `${s}s ago`;
+                            const m = Math.floor(s / 60);
+                            if (m < 60) return `${m} mins ago`;
+                            const h = Math.floor(m / 60);
+                            if (h < 24)
+                              return `${h} ${h === 1 ? "hr" : "hrs"} ago`;
+                            const d = Math.floor(h / 24);
+                            if (d < 7)
+                              return `${d} ${d === 1 ? "day" : "days"} ago`;
+                            const w = Math.floor(d / 7);
+                            if (w < 5)
+                              return `${w} ${w === 1 ? "wk" : "wks"} ago`;
+                            const mo = Math.floor(d / 30);
+                            if (mo < 12)
+                              return `${mo} ${mo === 1 ? "mo" : "mos"} ago`;
+                            const y = Math.floor(d / 365);
+                            return `${y} ${y === 1 ? "yr" : "yrs"} ago`;
+                          })()}
+                        </span>
+                      </div>
                     </div>
                   </div>
 

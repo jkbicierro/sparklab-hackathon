@@ -31,7 +31,7 @@ export const posts = pgTable("posts", {
       onDelete: "cascade",
     }),
 
-  type: varchar("type", { length: 100 }),
+  type: varchar("type", { length: 100 }).default("Report"),
   details: text("details"),
 
   longitude: doublePrecision("longitude"),

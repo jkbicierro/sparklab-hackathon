@@ -11,13 +11,11 @@ import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-
 import LocationPicker from "@/components/ui/locationPicker";
-import { log } from "console";
 
 export default function PostPage() {
   const supabase = createClient();
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
     async function getUser() {
@@ -32,7 +30,9 @@ export default function PostPage() {
       }
     }
     getUser();
-  }, []);
+  }, [supabase]);
+
+  console.log("test: ", userId);
 
   // Form states
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
@@ -97,7 +97,7 @@ export default function PostPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          user_id: currentUserId,
+          id: userId,
           details: desc,
           longitude: location.lng.toFixed(5),
           latitude: location.lat.toFixed(5),
