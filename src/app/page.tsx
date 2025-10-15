@@ -8,17 +8,16 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { ModeToggle } from "@/components/ui/modetoggle";
 import { Button } from "@/components/ui/button";
 import { Map } from "lucide-react";
 import Link from "next/link";
 import { NotificationList } from "@/components/magicui/notification";
-import MarkerDrawer from "@/components/block/markerDrawer";
 
 export default function Home() {
   return (
     <>
       <NavBar />
+
       <main className="px-[150px]">
         <section className="py-[150px]">
           <div className="flex justify-between items-center">
@@ -43,12 +42,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* <section className="py-[150px]"> */}
-          {/* <MarkerDrawer>
-            <Button>Open Marker Drawer</Button>
-          </MarkerDrawer> */}
-        {/* </section> */}
       </main>
     </>
   );
@@ -94,13 +87,12 @@ function NavBar() {
             </NavigationMenu>
 
             {/* Avatar */}
-            <Button>
+            <Button asChild>
               <Link href="/map" className="flex items-center gap-2">
                 <Map />
                 Report on Map
               </Link>
             </Button>
-            <ModeToggle />
           </div>
         </div>
       </nav>
