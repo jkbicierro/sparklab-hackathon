@@ -7,6 +7,14 @@ import ReactDOMServer from "react-dom/server";
 import Image from "next/image";
 import { Feed } from "@/components/block/feed";
 
+const TEST_COORDS = [
+  { longitude: 123.183874, latitude: 13.631545 },
+  { longitude: 123.1962, latitude: 13.6401 },
+  { longitude: 123.1715, latitude: 13.6209 },
+  { longitude: 123.1908, latitude: 13.6153 },
+  { longitude: 123.1764, latitude: 13.6467 },
+];
+
 export default function MapPage() {
   return (
     <>
@@ -25,14 +33,6 @@ export default function MapPage() {
     </>
   );
 }
-
-const TEST_COORDS = [
-  { longitude: 123.183874, latitude: 13.631545 },
-  { longitude: 123.1962, latitude: 13.6401 },
-  { longitude: 123.1715, latitude: 13.6209 },
-  { longitude: 123.1908, latitude: 13.6153 },
-  { longitude: 123.1764, latitude: 13.6467 },
-];
 
 const ReportMarker = () => {
   return (
