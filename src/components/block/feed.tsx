@@ -14,9 +14,10 @@ import {
 } from "lucide-react";
 import AvatarSelector from "@/components/ui/randomized-avatar";
 import Description from "@/components/description";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { Post } from "@/lib/model/post";
 
 interface Tab {
   key: number;
@@ -70,98 +71,55 @@ const TabsArray: Tab[] = [
   },
 ];
 
-export function Feed() {
-  type Post = {
-    post_id: string;
-    user_id: string;
-    type: string | null;
-    details: string | null;
-    longitude: number | null;
-    latitude: number | null;
-    created_at: string;
-  };
-
+export function Feed({ posts }: { posts: Post[] }) {
   const [activeKey, setActiveKey] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [items, setItems] = useState<Post[]>([]);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const active = TabsArray.find(
-      (t) => t.key === activeKey,
-    ) as (typeof TabsArray)[0];
-    const typeParam = active?.filterType;
-
-    async function load() {
-      try {
-        setLoading(true);
-        setError(null);
-        const url = typeParam
-          ? `/api/posts?type=${encodeURIComponent(typeParam)}`
-          : "/api/posts";
-        const res = await fetch(url, { signal: controller.signal });
-        if (!res.ok) throw new Error(`Failed to load posts (${res.status})`);
-        const data = (await res.json()) as { posts: Post[] };
-        setItems(data.posts ?? []);
-      } catch (e: unknown) {
-        if (e instanceof DOMException && e.name === "AbortError") {
-          // ignored
-        } else if (e instanceof Error) {
-          setError(e.message);
-        } else {
-          setError("Failed to load");
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    load();
-    return () => controller.abort();
-  }, [activeKey]);
+  const activeTab = TabsArray.find((t) => t.key === activeKey);
+  const filteredItems = posts.filter((p) =>
+    activeTab?.filterType ? p.type === activeTab.filterType : true,
+  );
 
   return (
     <>
-      {/* ACTION BUTTONS */}
+      {/* Action Buttons */}
       <FloatingActions />
       <div className="mb-2">
         <span className="text-primary text-2xl font-semibold ">Feed</span>
       </div>
 
-      {/* LOCATION */}
-      <div className="flex gap-1 p-3 items-center bg-accent text-accent-foreground/40 rounded-full">
+      {/* Location Input */}
+      <div className="flex gap-1 p-3 items-center bg-slate-50 text-accent-foreground/40 rounded-full">
         <MapPin size={16} />
         <span>Current Location</span>
       </div>
 
+      {/* Tab Filtering */}
       <ScrollableTabs
         Tabs={TabsArray}
         activeKey={activeKey}
         onSelect={(k) => setActiveKey(k)}
       />
 
-      {/* POSTS */}
+      {/* Posts */}
       <div className="space-y-3">
-        {loading ? (
-          <div className="text-sm text-muted-foreground">Loading…</div>
-        ) : error ? (
-          <div className="text-sm text-red-500">{error}</div>
-        ) : items.length === 0 ? (
+        {filteredItems.length === 0 ? (
           <div className="text-sm text-muted-foreground">No posts found.</div>
         ) : (
-          items.map((post) => (
-            <div key={post.post_id} className="border rounded-md p-3">
+          filteredItems.map((post) => (
+            <div key={post.post_id} className="bg-slate-50 rounded-md p-3">
               <div className="flex items-center justify-between  mb-4">
                 <div className="flex flex-col  gap-2 w-full">
+                  {/* Avatar */}
                   <div className="flex gap-3 items-center ">
                     <AvatarSelector />
+
                     <div className="flex flex-col ">
                       <span className="font-medium text-sm">User</span>
                       <span className="text-xs text-zinc-400">Recently</span>
                     </div>
                   </div>
 
+                  {/* Description */}
                   <div>
                     <span className="text-xs lg:text-sm text-justify ">
                       <Description description={post.details ?? ""} />

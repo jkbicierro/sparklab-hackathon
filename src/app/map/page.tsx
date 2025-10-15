@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import ReactDOMServer from "react-dom/server";
 import Image from "next/image";
 import { Feed } from "@/components/block/feed";
+import { Post } from "@/lib/model/post";
 
 const TEST_COORDS = [
   { longitude: 123.183874, latitude: 13.631545 },
@@ -16,13 +17,33 @@ const TEST_COORDS = [
 ];
 
 export default function MapPage() {
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    async function loadPosts() {
+      try {
+        const res = await fetch("/api/posts");
+
+        if (!res.ok) throw new Error(`Failed to load posts (${res.status})`);
+
+        const data = (await res.json()) as { posts: Post[] };
+
+        setPosts(data.posts ?? []);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    loadPosts();
+  }, []);
+
   return (
     <>
       <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row">
         {/* Sidebar */}
 
         <div className="z-99 fixed left-0 bottom-0 h-full w-full lg:w-[400px] bg-background p-5">
-          <Feed />
+          {/* Feed does client-side filtering; we fetch once here. */}
+          <Feed posts={posts} />
         </div>
 
         {/* Map */}
