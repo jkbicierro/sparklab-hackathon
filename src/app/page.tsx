@@ -23,7 +23,7 @@ export default function Home() {
     <>
       <NavBar />
       <main className="px-[150px]">
-        {/* <section className="py-[150px]">
+        <section className="py-[150px]">
           <div className="flex justify-between items-center">
             <div className="w-[450px] space-y-5">
               <h1>Unite Voices. Empower Change.</h1>
@@ -45,7 +45,7 @@ export default function Home() {
               <NotificationList />
             </div>
           </div>
-        </section> */}
+        </section>
 
         <section className="py-[150px]">
           <MarkerDrawer>
