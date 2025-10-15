@@ -5,7 +5,7 @@ import {
   varchar,
   boolean,
   timestamp,
-  real,
+  doublePrecision,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -34,8 +34,8 @@ export const posts = pgTable("posts", {
   type: varchar("type", { length: 100 }),
   details: text("details"),
 
-  longitude: real("longitude"),
-  latitude: real("latitude"),
+  longitude: doublePrecision("longitude"),
+  latitude: doublePrecision("latitude"),
 
   created_at: timestamp("created_at").defaultNow().notNull(),
 });

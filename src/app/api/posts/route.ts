@@ -4,12 +4,21 @@ import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
+    const { id, type, details, longitude, latitude } = await req.json();
+
+    if (!id || !type || !details || !longitude || !latitude) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 },
+      );
+    }
+
     await db.insert(posts).values({
-      user_id: "123e4567-e89b-12d3-a456-426614174000",
-      type: "example-type",
-      details: "This is an example post",
-      longitude: 12.34,
-      latitude: 56.78,
+      user_id: id,
+      type: type,
+      details: details,
+      longitude: longitude,
+      latitude: latitude,
     });
 
     return NextResponse.json(
