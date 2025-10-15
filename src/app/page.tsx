@@ -22,17 +22,20 @@ export default function Home() {
         <section className="py-[150px]">
           <div className="flex justify-between items-center">
             <div className="w-[450px] space-y-5">
-              <h1>Unite Voices. Empower Change.</h1>
+              <h1>
+                Unite <span className="text-primary">Voices.</span> Empower{" "}
+                <span className="text-primary">Change.</span>
+              </h1>
               <p className="text-slate-400">
                 VibeBayan is a crowdsourced platform where Filipinos can report,
                 discuss, and stay informed about public issues — verified,
                 localized, and organized.
               </p>
-              <div className="space-x-3">
+              <div className="space-x-2">
                 <Button>Report an Issue</Button>
                 <Button variant={"secondary"}>Explore Map</Button>
               </div>
-              <small className="text-slate-600">
+              <small className="text-slate-400">
                 Built by the people, for the people.
               </small>
             </div>
