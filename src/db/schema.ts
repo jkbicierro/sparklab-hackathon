@@ -37,5 +37,7 @@ export const posts = pgTable("posts", {
   longitude: doublePrecision("longitude"),
   latitude: doublePrecision("latitude"),
 
+  image_url: text("image_url"),
+
   created_at: timestamp("created_at").defaultNow().notNull(),
 });
