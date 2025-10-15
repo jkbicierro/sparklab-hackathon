@@ -40,9 +40,7 @@ export default function MapPage() {
     <>
       <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row">
         {/* Sidebar */}
-
-        <div className="z-99 fixed left-0 bottom-0 h-full w-full lg:w-[400px] bg-background p-5">
-          {/* Feed does client-side filtering; we fetch once here. */}
+        <div className="z-99 fixed left-0 bottom-0 h-[400px] lg:h-full w-full lg:w-[400px] bg-background p-5  rounded-t-4xl lg:rounded-none">
           <Feed posts={posts} />
         </div>
 

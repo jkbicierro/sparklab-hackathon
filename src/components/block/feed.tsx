@@ -86,20 +86,27 @@ export function Feed({ posts }: { posts: Post[] }) {
     <>
       {/* Action Buttons */}
       <FloatingActions />
-      <div className="mb-2 flex items-center gap-2">
-        {/* Logo */}
-        <Image
-          src={"/assets/vibebayan-logo.png"}
-          alt="VibeBayan Logo"
-          width={700}
-          height={700}
-          className="w-[40px] h-[40px]"
-        />
-        <span className="text-primary text-2xl font-semibold">Feed</span>
+
+      <div className="mb-3 flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          {/* Logo */}
+          <Image
+            src={"/assets/vibebayan-logo.png"}
+            alt="VibeBayan Logo"
+            width={700}
+            height={700}
+            className="w-[40px] h-[40px]"
+          />
+          <span className="text-primary text-lg font-semibold">
+            See what&apos;s happening
+          </span>
+        </div>
+
+        <AvatarSelector />
       </div>
 
       {/* Location Input */}
-      <div className="flex items-center gap-2 px-4 py-3 bg-slate-50 text-slate-700 rounded-full cursor-pointer">
+      <div className="flex items-center gap-2 px-4 py-3 bg-slate-50 text-slate-400 rounded-full cursor-pointer">
         <MapPin size={14} />
         <span className="text-sm">Current Location</span>
       </div>
@@ -125,8 +132,8 @@ export function Feed({ posts }: { posts: Post[] }) {
                     <AvatarSelector />
 
                     <div className="flex flex-col ">
-                      <span className="font-medium text-sm">User</span>
-                      <span className="text-xs text-zinc-400">
+                      <span className="font-medium text-sm">Anon</span>
+                      <span className="text-xs text-slate-400">
                         {(() => {
                           const date = new Date(post.created_at as any);
                           if (isNaN(date.getTime())) return "";
