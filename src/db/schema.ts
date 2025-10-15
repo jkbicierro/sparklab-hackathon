@@ -6,6 +6,7 @@ import {
   integer,
   boolean,
   timestamp,
+  real,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -38,8 +39,8 @@ export const posts = pgTable("posts", {
   type: varchar("type", { length: 100 }),
   details: text("details"),
 
-  longitude: integer("longitude"),
-  latitude: integer("latitude"),
+  longitude: real("longitude"),
+  latitude: real("latitude"),
 
   created_at: timestamp("created_at"),
 });
