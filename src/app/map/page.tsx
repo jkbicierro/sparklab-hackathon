@@ -73,10 +73,10 @@ export default function MapPage() {
   }
   return (
     <>
-      <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row animate-in fade-in-0 duration-500">
+      <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row">
         {/* Sidebar */}
         <div
-          className={`z-5 fixed left-0 bottom-0 ${isFull ? "h-full" : "h-[230px]"} lg:h-full w-full lg:w-[400px] bg-background p-5  ${isFull ? "rounded-none" : "rounded-t-4xl"} lg:rounded-none   transition-all duration-500 ease-in-out`}
+          className={`z-5 fixed left-0 bottom-0 ${isFull ? "h-full" : "h-[230px]"} lg:h-full w-full lg:w-[400px] bg-background p-5  ${isFull ? "rounded-none" : "rounded-t-4xl"} lg:rounded-none  transition-all duration-500 ease-in-out`}
         >
           <div
             className=" flex justify-center "
@@ -146,24 +146,23 @@ function MapBox({ posts, activeKey }: { posts: Post[]; activeKey: number }) {
       );
 
       mapRef.current.on("load", () => {
+        async function getAds() {
+          const res = await fetch("/api/ads");
+
+          if (!res.ok) throw Error;
+
+          const data = (await res.json()) as { advertisements: Ads[] };
+          console.log(data.advertisements);
+
+          setAds(data!.advertisements);
+        }
+
+        getAds();
         setMapLoading(false);
       });
     });
     return () => {
       mapRef.current?.remove();
-
-      async function getAds() {
-        const res = await fetch("/api/ads");
-
-        if (!res.ok) throw Error;
-
-        const data = (await res.json()) as { advertisements: Ads[] };
-        console.log(data.advertisements);
-
-        setAds(data!.advertisements);
-      }
-
-      getAds();
     };
   }, [posts]);
 
@@ -205,7 +204,6 @@ function MapBox({ posts, activeKey }: { posts: Post[]; activeKey: number }) {
           }
         })}
       {!mapLoading &&
-        ads!.length > 0 &&
         ads?.map((ad) => {
           return (
             <Marker
