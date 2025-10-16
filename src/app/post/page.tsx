@@ -12,9 +12,11 @@ import { toast } from "sonner";
 import LocationPicker from "@/components/ui/locationPicker";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
+import { useFileStore } from "@/store/useFileStore";
 
 export default function PostPage() {
   const supabase = createClient();
+  const { file, preview, clear } = useFileStore();
   const [userId, setUserId] = useState<string>("");
   const router = useRouter();
   useEffect(() => {
@@ -41,14 +43,16 @@ export default function PostPage() {
 
   const [desc, setDesc] = useState("");
 
-  const [long, setLong] = useState<number>();
-  const [lat, setLat] = useState<number>();
-
   const [files, setFiles] = useState<File[] | undefined>();
   const [filePreview, setFilePreview] = useState<string | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
-  // Location Select
+
+  useEffect(() => {
+    if (file && preview) {
+      setFiles([file]);
+      setFilePreview(preview);
+    }
+  }, [file, preview]);
 
   // File handler
   function HandleFiles(event: React.ChangeEvent<HTMLInputElement>) {
@@ -173,95 +177,97 @@ export default function PostPage() {
 
   return (
     <>
-      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh bg-background flex flex-col overflow-y-scroll p-3 lg:p-20 animate-in fade-in-0 duration-800">
-        <div className="flex">
-          <div
-            onClick={() => router.push("/map")}
-            className=" text-primary bg-primary/10 p-3 px-5 rounded-full flex items-center gap-1 hover:bg-primary/30 transition cursor-pointer"
-          >
-            <ChevronLeft size={16} />
-            <span className="text-sm">Back</span>
-          </div>
-        </div>
-
-        <span className="text-xl my-[20px]  font-semibold text-primary">
-          Report
-        </span>
-        <div className="space-y-[16px]">
-          <div className="flex gap-3 items-center">
-            <AvatarSelector />
-            <div className="flex flex-col ">
-              <span className="font-medium text-sm">Anon</span>
-              <span className="text-xs text-zinc-400">To all</span>
+      <div className="flex justify-center ">
+        <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh bg-background flex flex-col overflow-y-scroll  p-3 lg:overflow-y-hidden lg:p-20 lg:w-1/2 animate-in fade-in-0 duration-800 ">
+          <div className="flex">
+            <div
+              onClick={() => router.push("/map")}
+              className=" text-primary bg-primary/10 p-3 px-5 rounded-full flex items-center gap-1 hover:bg-primary/30 transition cursor-pointer"
+            >
+              <ChevronLeft size={16} />
+              <span className="text-sm">Back</span>
             </div>
           </div>
-          <div className="flex flex-col space-y-2">
-            <LocationPicker onChange={setLocation} />
-          </div>
-          <div className="flex flex-col space-y-2">
-            <span className="text-sm">Do you have a photo?</span>
 
-            <Input
-              id="picture"
-              type="file"
-              className="hidden"
-              onChange={HandleFiles}
-            />
-            {filePreview ? (
-              <div className="flex justify-between items-center">
-                <img
-                  alt="Preview"
-                  className=" h-[140px] w-[140px] object-cover rounded-lg"
-                  src={filePreview}
-                />
-                <label
-                  htmlFor="picture"
-                  className="cursor-pointer h-full items-center justify-between flex  rounded-lg  border-[#c4c4c4]  border-[1px] border-dashed p-[15px] hover:bg-zinc-50 transition"
-                >
-                  <span className="text-sm text-zinc-400">Change photo</span>
-                </label>
+          <span className="text-xl my-[20px]  font-semibold text-primary">
+            Report
+          </span>
+          <div className="space-y-[16px]">
+            <div className="flex gap-3 items-center">
+              <AvatarSelector />
+              <div className="flex flex-col ">
+                <span className="font-medium text-sm">Anon</span>
+                <span className="text-xs text-zinc-400">To all</span>
               </div>
-            ) : (
-              <>
-                {/* Clickable upload box */}
-                <label
-                  htmlFor="picture"
-                  className="cursor-pointer h-full w-full flex flex-col justify-center items-center border-[#c4c4c4] rounded-[8px] border-[1px] border-dashed p-[15px] hover:bg-zinc-50 transition"
-                >
-                  <Img className="text-zinc-400" size={16} />
-                  <span className="text-sm text-zinc-400">Attach photo</span>
-                </label>
-              </>
-            )}
-          </div>
-          <div className="flex flex-col space-y-2">
-            <span className="text-sm">What happened?</span>
-            <Textarea
-              className="text-sm"
-              placeholder="Type your message here."
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-            />
-          </div>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <LocationPicker onChange={setLocation} />
+            </div>
+            <div className="flex flex-col space-y-2">
+              <span className="text-sm">Do you have a photo?</span>
 
-          <div className="flex flex-col text-xs">
-            <span className="font-semibold mr-[2px]">Warning:</span> Submitting
-            false reports may lead to repercussions.
+              <Input
+                id="picture"
+                type="file"
+                className="hidden"
+                onChange={HandleFiles}
+              />
+              {filePreview ? (
+                <div className="flex justify-between items-center">
+                  <img
+                    alt="Preview"
+                    className=" h-[140px] w-[140px] object-cover rounded-lg"
+                    src={filePreview}
+                  />
+                  <label
+                    htmlFor="picture"
+                    className="cursor-pointer h-full items-center justify-between flex  rounded-lg  border-[#c4c4c4]  border-[1px] border-dashed p-[15px] hover:bg-zinc-50 transition"
+                  >
+                    <span className="text-sm text-zinc-400">Change photo</span>
+                  </label>
+                </div>
+              ) : (
+                <>
+                  {/* Clickable upload box */}
+                  <label
+                    htmlFor="picture"
+                    className="cursor-pointer h-full w-full flex flex-col justify-center items-center border-[#c4c4c4] rounded-[8px] border-[1px] border-dashed p-[15px] hover:bg-zinc-50 transition"
+                  >
+                    <Img className="text-zinc-400" size={16} />
+                    <span className="text-sm text-zinc-400">Attach photo</span>
+                  </label>
+                </>
+              )}
+            </div>
+            <div className="flex flex-col space-y-2">
+              <span className="text-sm">What happened?</span>
+              <Textarea
+                className="text-sm"
+                placeholder="Type your message here."
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
+              />
+            </div>
+
+            <div className="flex flex-col text-xs">
+              <span className="font-semibold mr-[2px]">Warning:</span>{" "}
+              Submitting false reports may lead to repercussions.
+            </div>
+            <Button
+              onClick={ButtonAction}
+              className="w-full bg-[#D7F1FF] h-[45px] p-[10px] text-[#2E9DFF]"
+              disabled={!userId || isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Publishing...
+                </>
+              ) : (
+                "Post"
+              )}
+            </Button>
           </div>
-          <Button
-            onClick={ButtonAction}
-            className="w-full bg-[#D7F1FF] h-[45px] p-[10px] text-[#2E9DFF]"
-            disabled={!userId || isSubmitting}
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Publishing...
-              </>
-            ) : (
-              "Post"
-            )}
-          </Button>
         </div>
       </div>
     </>

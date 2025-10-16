@@ -5,8 +5,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Register - OpenBayan",
-  description: "Create a new account on OpenBayan",
+  title: "Register - VibeBayan",
+  description: "Create a new account on VibeBayan",
 };
 
 export default async function RegisterPage() {
