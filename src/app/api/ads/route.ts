@@ -7,7 +7,7 @@ export async function GET() {
     const data = await db.select().from(advertistments).limit(50);
     return NextResponse.json({ advertistments: data }, { status: 200 });
   } catch (err) {
-    console.error("Error in GET /api/posts:", err);
+    console.error("Error in GET /api/advertistments:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
