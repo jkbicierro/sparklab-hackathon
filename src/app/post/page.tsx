@@ -130,43 +130,18 @@ export default function PostPage() {
 
         const data = await res.json();
         if (res.ok) {
-          toast.success(
-            <span>
-              Reported Successfully
-              {/* <Link
-                href="/memes/profile"
-                className="underline hover:text-primary"
-              >
-                View Meme
-              </Link> */}
-            </span>,
-          );
+          toast.success(<span>Reported Successfully</span>);
+
+          router.push("/map");
+
           // Reset form
-
           setDesc("");
-
           setFiles(undefined);
           setFiles(undefined);
           setFilePreview(undefined);
         } else {
           toast.error(data.error || "Failed to create meme. Please try again.");
         }
-        // for (const file of files) {
-        //   // const fileExt = file.name.split(".").pop();
-        //   // const fileName = `${uuidv4()}.${fileExt}`;
-        //   // const filePath = `${fileName}`;
-
-        //   // const { error: uploadError } = await supabase.storage
-        //   //   .from("memes")
-        //   //   .upload(filePath, file, { cacheControl: "3600", upsert: false });
-
-        //   // if (uploadError) {
-        //   //   console.error("Upload error:", uploadError.message);
-        //   //   toast.error("Failed to upload image. Please try again.");
-        //   //   return;
-        //   // }
-
-        // }
       }
     } catch (error) {
       console.error("Submission error:", error);
