@@ -8,6 +8,7 @@ import Image from "next/image";
 import { Feed } from "@/components/block/feed";
 import { Post } from "@/lib/model/post";
 import MarkerDrawer from "@/components/block/markerDrawer";
+import { Ads } from "@/lib/model/ads";
 
 const keys = [
   {
@@ -105,8 +106,11 @@ function MapBox({ posts, activeKey }: { posts: Post[]; activeKey: number }) {
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   const [post, setSelectedMarker] = useState<Post | null>(null);
+  const [selectedAD, setSelectedAd] = useState<Ads |null>(null);
+  const [ads, setAds] = useState<Ads[] | null>(null)
   const [mapLoading, setMapLoading] = useState(true);
   const [open, setOpen] = useState(false);
+  const [type, setType] = useState<string | null>("");
 
   useEffect(() => {
     if (!posts) {
@@ -145,12 +149,35 @@ function MapBox({ posts, activeKey }: { posts: Post[]; activeKey: number }) {
     });
     return () => {
       mapRef.current?.remove();
+
+      async function getAds() {
+        const res = await fetch("/api/ads")
+
+        if (!res.ok) throw Error
+
+        const data = (await res.json()) as { advertisements: Ads[]}
+        console.log(data.advertisements);
+        
+        setAds(data!.advertisements);
+      }
+
+      getAds();
+
     };
   }, [posts]);
 
   async function handleSelectMarker(id: string | null) {
     const selectedMarker = posts.filter((post) => post.post_id === id);
     setSelectedMarker(selectedMarker[0]);
+    setType("post")
+    setOpen(true);
+  }
+
+  async function handleSelectAd(id: string | null) {
+    const thisAd = ads!.filter((ad) => ad.ads_id === id);
+    setSelectedAd(thisAd[0]);
+    console.log(thisAd);
+    setType("ads");
     setOpen(true);
   }
 
@@ -169,14 +196,30 @@ function MapBox({ posts, activeKey }: { posts: Post[]; activeKey: number }) {
                 id={post.post_id}
                 map={mapRef.current}
                 handleSelectMarker={handleSelectMarker}
+                imageLink={null}
                 coords={{ longitude: post.longitude, latitude: post.latitude }}
                 type={post.type}
               />
             );
           }
         })}
+        {!mapLoading && ads!.length > 0 && 
+        ads?.map((ad) => {
+          return (
+                <Marker
+                  key={ad.ads_id}
+                  id={ad.ads_id}
+                  map={mapRef.current}
+                  handleSelectMarker={handleSelectAd}
+                  imageLink={ad.image_url}
+                  coords={{ longitude: ad.longitude, latitude: ad.latitude }}
+                  type={"Business"}
+                />
+              );
+        })
+        }
 
-      <MarkerDrawer post={post} open={open} setOpen={setOpen} />
+      <MarkerDrawer post={post} ad={selectedAD} open={open} setOpen={setOpen} type={type} />
     </>
   );
 }
@@ -189,10 +232,11 @@ interface MarkerProps {
     latitude: number | null;
   };
   handleSelectMarker: (id: string | null) => void;
+  imageLink: string | null;
   type: string | null;
 }
 
-function Marker({ id, map, coords, handleSelectMarker, type }: MarkerProps) {
+function Marker({ id, map, coords, handleSelectMarker, imageLink, type }: MarkerProps) {
   const { longitude, latitude } = coords;
 
   const markerEl = document.createElement("div");
@@ -251,6 +295,16 @@ function Marker({ id, map, coords, handleSelectMarker, type }: MarkerProps) {
             alt="Report marker"
             height={30}
             width={30}
+          />
+        );
+      case "Business":
+        return (
+          <Image
+            src={`https://hucsiehmwkqjkfxwxnfn.supabase.co/storage/v1/object/public/ads/${imageLink}`}
+            alt="Report marker"
+            height={40}
+            width={40}
+            className="rounded-full border-[2px] border-gray-700"
           />
         );
     }
