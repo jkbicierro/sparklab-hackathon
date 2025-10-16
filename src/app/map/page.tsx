@@ -127,7 +127,7 @@ function MapBox({ posts, activeKey }: { posts: Post[]; activeKey: number }) {
 
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current as HTMLDivElement,
-        style: "mapbox://styles/mapbox/standard",
+        style: "mapbox://styles/mapbox/streets-v12",
         center: [longitude, latitude],
         zoom: 14,
         minZoom: 8,

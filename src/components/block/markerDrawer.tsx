@@ -42,11 +42,6 @@ export default function MarkerDrawer({
   }, [post, ad]);
 
   if (type == "ads") {
-    if (!ad) {
-      return <div></div>;
-    }
-    console.log(ad);
-
     return (
       <div>
         <Drawer open={open} onOpenChange={setOpen}>
