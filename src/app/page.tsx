@@ -19,9 +19,9 @@ export default function Home() {
       <NavBar />
 
       <main className="px-[150px]">
-        <section className="py-[150px]">
-          <div className="flex justify-between items-center">
-            <div className="w-[450px] space-y-5">
+        <section className="py-[100px] lg:py-[150px]">
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-10">
+            <div className="w-[350px] lg:w-[450px] space-y-5 text-center lg:text-start">
               <h1>
                 Unite <span className="text-primary">Voices.</span> Empower{" "}
                 <span className="text-primary">Change.</span>
@@ -32,15 +32,19 @@ export default function Home() {
                 localized, and organized.
               </p>
               <div className="space-x-2">
-                <Button>Report an Issue</Button>
-                <Button variant={"secondary"}>Explore Map</Button>
+                <Button asChild>
+                  <Link href={"/post"}>Report an Issue</Link>
+                </Button>
+                <Button variant={"secondary"} asChild>
+                  <Link href={"/map"}>Explore Map</Link>
+                </Button>
               </div>
               <small className="text-slate-400">
                 Built by the people, for the people.
               </small>
             </div>
 
-            <div className="h-[350px] w-[400px]">
+            <div className="h-[350px] w-[350px] lg:w-[400px]">
               <NotificationList />
             </div>
           </div>
@@ -53,7 +57,7 @@ export default function Home() {
 function NavBar() {
   return (
     <>
-      <nav className="px-[150px] fixed top-0 w-full h-[70px] border-b z-[999] bg-background">
+      <nav className="px-[20px] lg:px-[150px] fixed top-0 w-full h-[70px] border-b z-[999] bg-background">
         <div className="w-full h-full flex items-center justify-between">
           {/* Logo */}
           <Image
@@ -66,7 +70,7 @@ function NavBar() {
 
           <div className="flex items-center gap-5">
             {/* Navigation Menu */}
-            <NavigationMenu>
+            <NavigationMenu className="hidden lg:block">
               <NavigationMenuList>
                 <NavigationMenuItem className={navigationMenuTriggerStyle()}>
                   Home
