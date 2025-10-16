@@ -1,7 +1,14 @@
 import { LoginForm } from "@/components/forms/loginForm";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Log in - VibeBayan",
+  description: "Log in to your account on VibeBayan",
+};
+
 export default async function LoginPage() {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
