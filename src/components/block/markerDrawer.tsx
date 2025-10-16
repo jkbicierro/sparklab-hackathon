@@ -1,4 +1,7 @@
+"use client";
+
 import React, { useEffect } from "react";
+import Image from "next/image";
 import {
   Drawer,
   DrawerClose,
@@ -25,69 +28,87 @@ interface DrawerState {
   type: string | null;
 }
 
-export default function MarkerDrawer({ open, setOpen, post, ad, type }: DrawerState) {
-  console.log(post);
+export default function MarkerDrawer({
+  open,
+  setOpen,
+  post,
+  ad,
+  type,
+}: DrawerState) {
+  useEffect(() => {
+    console.log("Post data:", post);
+    console.log("Ad data:", ad);
+    console.log("Type:", type);
+  }, [post, ad]);
+
   if (type == "ads") {
+    if (!ad) {
+      return <div></div>;
+    }
+    console.log(ad);
+
     return (
-    <div>
-      <Drawer open={open} onOpenChange={setOpen}>
-        {/* <DrawerTrigger asChild>{children}</DrawerTrigger> */}
-        <DrawerContent className="flex flex-col items-center pb-[150px] px-[20px]">
-          <DrawerHeader>
-            <DrawerTitle></DrawerTitle>
-            <DrawerDescription></DrawerDescription>
-          </DrawerHeader>
+      <div>
+        <Drawer open={open} onOpenChange={setOpen}>
+          {/* <DrawerTrigger asChild>{children}</DrawerTrigger> */}
+          <DrawerContent className="flex flex-col items-center pb-[150px] px-[20px]">
+            <DrawerHeader>
+              <DrawerTitle></DrawerTitle>
+              <DrawerDescription></DrawerDescription>
+            </DrawerHeader>
 
-          {/*  */}
-          <div>
-            {/* User Profile */}
-            <div className="flex items-center gap-5">
-
-            <Avatar>
-              <AvatarImage src={`https://hucsiehmwkqjkfxwxnfn.supabase.co/storage/v1/object/public/ads/${ad?.image_url}`} alt="Avater" />
-              </Avatar>
-              <div className="flex flex-col">
-                <span>{ad?.business_name}</span>
-                <span className="text-xs text-slate-400">
-                  {(() => {
-                    const date = new Date(post?.created_at || "");
-                    if (isNaN(date.getTime())) return "";
-                    const diff = Date.now() - date.getTime();
-                    const s = Math.floor(diff / 1000);
-                    if (s < 60) return `${s}s ago`;
-                    const m = Math.floor(s / 60);
-                    if (m < 60) return `${m} mins ago`;
-                    const h = Math.floor(m / 60);
-                    if (h < 24) return `${h} ${h === 1 ? "hr" : "hrs"} ago`;
-                    const d = Math.floor(h / 24);
-                    if (d < 7) return `${d} ${d === 1 ? "day" : "days"} ago`;
-                    const w = Math.floor(d / 7);
-                    if (w < 5) return `${w} ${w === 1 ? "wk" : "wks"} ago`;
-                    const mo = Math.floor(d / 30);
-                    if (mo < 12) return `${mo} ${mo === 1 ? "mo" : "mos"} ago`;
-                    const y = Math.floor(d / 365);
-                    return `${y} ${y === 1 ? "yr" : "yrs"} ago`;
-                  })()}
-                </span>
+            {/*  */}
+            <div>
+              {/* User Profile */}
+              <div className="flex items-center gap-5">
+                <Image
+                  src={`https://hucsiehmwkqjkfxwxnfn.supabase.co/storage/v1/object/public/ads/${ad?.image_url}`}
+                  alt="Avatar"
+                  className="rounded-full"
+                  width={30}
+                  height={30}
+                />
+                <div className="flex flex-col">
+                  <span>{ad?.business_name}</span>
+                  <span className="text-xs text-slate-400">
+                    {(() => {
+                      const date = new Date(post?.created_at || "");
+                      if (isNaN(date.getTime())) return "";
+                      const diff = Date.now() - date.getTime();
+                      const s = Math.floor(diff / 1000);
+                      if (s < 60) return `${s}s ago`;
+                      const m = Math.floor(s / 60);
+                      if (m < 60) return `${m} mins ago`;
+                      const h = Math.floor(m / 60);
+                      if (h < 24) return `${h} ${h === 1 ? "hr" : "hrs"} ago`;
+                      const d = Math.floor(h / 24);
+                      if (d < 7) return `${d} ${d === 1 ? "day" : "days"} ago`;
+                      const w = Math.floor(d / 7);
+                      if (w < 5) return `${w} ${w === 1 ? "wk" : "wks"} ago`;
+                      const mo = Math.floor(d / 30);
+                      if (mo < 12)
+                        return `${mo} ${mo === 1 ? "mo" : "mos"} ago`;
+                      const y = Math.floor(d / 365);
+                      return `${y} ${y === 1 ? "yr" : "yrs"} ago`;
+                    })()}
+                  </span>
+                </div>
               </div>
-            </div>
 
-            {/* Location & Report */}
-            <div className="mt-5 space-x-3">
-              <Badge>
-                <MapPin /> {ad?.longitude}, {ad?.latitude}
-              </Badge>
-              <Badge>
-                Advertisement
-              </Badge>
-            </div>
+              {/* Location & Report */}
+              <div className="mt-5 space-x-3">
+                <Badge>
+                  <MapPin /> {ad?.longitude}, {ad?.latitude}
+                </Badge>
+                <Badge>Advertisement</Badge>
+              </div>
 
-            {/* Report Details */}
-            <div className="mt-5">
-              <h5>Advertisement Details</h5>
-              <p className="mt-2 text-slate-400">{ad?.description}</p>
+              {/* Report Details */}
+              <div className="mt-5">
+                <h5>Advertisement Details</h5>
+                <p className="mt-2 text-slate-400">{ad?.description}</p>
 
-              {/* <div className="mt-5 flex gap-10">
+                {/* <div className="mt-5 flex gap-10">
                 <div className="flex flex-col">
                   <span className="text-sm text-slate-400">Severity</span>
                   <span className="mt-1">High</span>
@@ -98,24 +119,22 @@ export default function MarkerDrawer({ open, setOpen, post, ad, type }: DrawerSt
                 </div>
               </div> */}
 
-              {/*  */}
-              <div className="mt-5">
-                <h5 className="mb-3">Click me!</h5>
+                {/*  */}
+                <div className="mt-5">
+                  <h5 className="mb-3">Click me!</h5>
 
-                {/* Card */}
-                <div className="flex flex-col gap-1 px-4 py-3 bg-amber-100 text-amber-700 rounded-2xl">
-                  <span>Link to business:</span>
-                  <span className="text-xs">
-                    {ad?.link}
-                  </span>
+                  {/* Card */}
+                  <div className="flex flex-col gap-1 px-4 py-3 bg-amber-100 text-amber-700 rounded-2xl">
+                    <span>Link to business:</span>
+                    <span className="text-xs">{ad?.link}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </DrawerContent>
-      </Drawer>
-    </div>
-    )
+          </DrawerContent>
+        </Drawer>
+      </div>
+    );
   }
 
   return (
