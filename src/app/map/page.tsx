@@ -75,14 +75,16 @@ export default function MapPage() {
       <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row animate-in fade-in-0 duration-500">
         {/* Sidebar */}
         <div
-          className={`z-5 fixed left-0 bottom-0 ${isFull ? "h-full" : "h-[200px]"} lg:h-full w-full lg:w-[400px] bg-background p-5  ${isFull ? "rounded-none" : "rounded-t-4xl"} lg:rounded-none   transition-all duration-500 ease-in-out`}
+          className={`z-5 fixed left-0 bottom-0 ${isFull ? "h-full" : "h-[230px]"} lg:h-full w-full lg:w-[400px] bg-background p-5  ${isFull ? "rounded-none" : "rounded-t-4xl"} lg:rounded-none   transition-all duration-500 ease-in-out`}
         >
-          <div className="flex justify-center ">
-            <div
-              className="p-1 bg-slate-200 rounded-full flex flex-col w-1/4 items-center cursor-pointer hover:bg-slate-300 transition lg:hidden"
-              onClick={() => setFull((prev) => !prev)}
-            />
+          <div
+            className=" flex justify-center "
+            onDrag={() => setFull((prev) => !prev)}
+            onClick={() => setFull((prev) => !prev)}
+          >
+            <div className="p-1 mb-5 bg-slate-100 rounded-full flex flex-col w-1/4 items-center cursor-pointer hover:bg-slate-200 transition lg:hidden" />
           </div>
+
           <Feed
             posts={posts}
             isFull={isFull}
@@ -169,7 +171,10 @@ function MapBox({ posts, activeKey }: { posts: Post[]; activeKey: number }) {
                 id={post.post_id}
                 map={mapRef.current}
                 handleSelectMarker={handleSelectMarker}
-                coords={{ longitude: post.longitude, latitude: post.latitude }}
+                coords={{
+                  longitude: post.longitude,
+                  latitude: post.latitude,
+                }}
                 type={post.type}
               />
             );

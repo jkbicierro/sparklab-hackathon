@@ -117,7 +117,7 @@ export function Feed({ posts, isFull, activeKey, setActiveKey }: FeedProps) {
       {/* Action Buttons */}
       <FloatingActions isFull={isFull} />
 
-      <div className="mb-3 flex justify-between items-center">
+      <div className="mb-3 flex justify-between items-center ">
         <div className="flex items-center gap-2">
           {/* Logo */}
           <Image
@@ -322,7 +322,7 @@ function FloatingActions({ isFull }: ActionProps) {
 
   return (
     <div
-      className={`z-3 fixed ${isFull ? "bottom-3" : "bottom-55"} lg:bottom-7 right-6 flex flex-col items-end space-y-2  transition-all duration-500 ease-in-out`}
+      className={`z-3 fixed ${isFull ? "bottom-3" : "bottom-65"} lg:bottom-7 right-6 flex flex-col items-end space-y-2  transition-all duration-500 ease-in-out`}
     >
       {open && (
         <div className="fixed -inset-10 bg-black/50 -z-50 animate-in fade-in-0 fade-out-0 duration-500 "></div>
@@ -414,7 +414,7 @@ function ScrollableTabs({
       {/* Left Arrow */}
       <button
         onClick={() => scroll("left")}
-        className="absolute left-0 top-5 z-2 p-2 bg-white dark:bg-gray-900 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
+        className="absolute left-0 top-5 z-2 p-2 bg-white dark:bg-gray-900 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800"
       >
         <ChevronLeft size={20} />
       </button>
