@@ -15,16 +15,20 @@ import { Badge } from "../ui/badge";
 import { Flag, MapPin } from "lucide-react";
 import { Post } from "@/lib/model/post";
 import AvatarSelector from "../ui/randomized-avatar";
+import { Ads } from "@/lib/model/ads";
 
 interface DrawerState {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   post: Post | null;
+  ad: Ads | null;
+  type: string | null;
 }
 
-export default function MarkerDrawer({ open, setOpen, post }: DrawerState) {
+export default function MarkerDrawer({ open, setOpen, post, ad, type }: DrawerState) {
   console.log(post);
-  return (
+  if (type == "ads") {
+    return (
     <div>
       <Drawer open={open} onOpenChange={setOpen}>
         {/* <DrawerTrigger asChild>{children}</DrawerTrigger> */}
@@ -70,6 +74,94 @@ export default function MarkerDrawer({ open, setOpen, post }: DrawerState) {
             <div className="mt-5 space-x-3">
               <Badge>
                 <MapPin /> {post?.longitude}, {post?.latitude}
+              </Badge>
+              <Badge>
+                Advertisement
+              </Badge>
+            </div>
+
+            {/* Report Details */}
+            <div className="mt-5">
+              <h5>Advertisement Details</h5>
+              <p className="mt-2 text-slate-400">{ad?.description}</p>
+
+              {/* <div className="mt-5 flex gap-10">
+                <div className="flex flex-col">
+                  <span className="text-sm text-slate-400">Severity</span>
+                  <span className="mt-1">High</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-slate-400">Type</span>
+                  <span className="mt-1">High</span>
+                </div>
+              </div> */}
+
+              {/*  */}
+              <div className="mt-5">
+                <h5 className="mb-3">Click me!</h5>
+
+                {/* Card */}
+                <div className="flex flex-col gap-1 px-4 py-3 bg-amber-100 text-amber-700 rounded-2xl">
+                  <span>Link to business:</span>
+                  <span className="text-xs">
+                    {ad?.link}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </DrawerContent>
+      </Drawer>
+    </div>
+    )
+  }
+
+  return (
+    <div>
+      <Drawer open={open} onOpenChange={setOpen}>
+        {/* <DrawerTrigger asChild>{children}</DrawerTrigger> */}
+        <DrawerContent className="flex flex-col items-center pb-[150px] px-[20px]">
+          <DrawerHeader>
+            <DrawerTitle></DrawerTitle>
+            <DrawerDescription></DrawerDescription>
+          </DrawerHeader>
+
+          {/*  */}
+          <div>
+            {/* User Profile */}
+            <div className="flex items-center gap-5">
+              <AvatarSelector />
+
+              <div className="flex flex-col">
+                <span>Anon</span>
+                <span className="text-xs text-slate-400">
+                  {(() => {
+                    const date = new Date(post?.created_at || "");
+                    if (isNaN(date.getTime())) return "";
+                    const diff = Date.now() - date.getTime();
+                    const s = Math.floor(diff / 1000);
+                    if (s < 60) return `${s}s ago`;
+                    const m = Math.floor(s / 60);
+                    if (m < 60) return `${m} mins ago`;
+                    const h = Math.floor(m / 60);
+                    if (h < 24) return `${h} ${h === 1 ? "hr" : "hrs"} ago`;
+                    const d = Math.floor(h / 24);
+                    if (d < 7) return `${d} ${d === 1 ? "day" : "days"} ago`;
+                    const w = Math.floor(d / 7);
+                    if (w < 5) return `${w} ${w === 1 ? "wk" : "wks"} ago`;
+                    const mo = Math.floor(d / 30);
+                    if (mo < 12) return `${mo} ${mo === 1 ? "mo" : "mos"} ago`;
+                    const y = Math.floor(d / 365);
+                    return `${y} ${y === 1 ? "yr" : "yrs"} ago`;
+                  })()}
+                </span>
+              </div>
+            </div>
+
+            {/* Location & Report */}
+            <div className="mt-5 space-x-3">
+              <Badge>
+                <MapPin /> {ad?.longitude}, {ad?.latitude}
               </Badge>
               <Badge
                 style={{
