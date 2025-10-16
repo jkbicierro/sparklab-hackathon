@@ -22,7 +22,25 @@ import { Post } from "@/lib/model/post";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
 import { Input } from "../ui/input";
-
+import { useFileStore } from "@/store/useFileStore";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 interface Tab {
   key: number;
   icon: React.ReactNode;
@@ -87,6 +105,8 @@ type ActionProps = {
 };
 
 export function Feed({ posts, isFull, activeKey, setActiveKey }: FeedProps) {
+  const [photoOpen, setPhotoOpen] = useState(false);
+
   const activeTab = TabsArray.find((t) => t.key === activeKey);
   const filteredItems = posts.filter((p) =>
     activeTab?.filterType ? p.type === activeTab.filterType : true,
@@ -210,13 +230,27 @@ export function Feed({ posts, isFull, activeKey, setActiveKey }: FeedProps) {
                   </div>
                   {post.image_url ? (
                     <div className="mt-4 h-[200px] w-full overflow-clip rounded-md ">
-                      <Image
-                        src={`https://hucsiehmwkqjkfxwxnfn.supabase.co/storage/v1/object/public/posts/${post.image_url}`}
-                        alt={""}
-                        width={700}
-                        height={700}
-                        className="object-cover"
-                      />
+                      <Dialog open={photoOpen} onOpenChange={setPhotoOpen}>
+                        <DialogTrigger asChild>
+                          <Image
+                            src={`https://hucsiehmwkqjkfxwxnfn.supabase.co/storage/v1/object/public/posts/${post.image_url}`}
+                            alt={""}
+                            width={700}
+                            height={700}
+                            className="object-cover"
+                          />
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px] bg-transparent border-transparent shadow-none">
+                          <DialogTitle> </DialogTitle>
+                          <Image
+                            src={`https://hucsiehmwkqjkfxwxnfn.supabase.co/storage/v1/object/public/posts/${post.image_url}`}
+                            alt={""}
+                            width={700}
+                            height={700}
+                            className="object-cover  w-full h-full rounded-lg"
+                          />
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   ) : (
                     <></>
@@ -244,23 +278,23 @@ export function Feed({ posts, isFull, activeKey, setActiveKey }: FeedProps) {
 }
 
 function FloatingActions({ isFull }: ActionProps) {
+  const { setFile } = useFileStore();
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const [files, setFiles] = useState<File[] | undefined>();
-  const [filePreview, setFilePreview] = useState<string | undefined>();
+
   function HandleFiles(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
 
     if (files && files.length > 0) {
-      setFiles(Array.from(files));
+      const file = files[0];
       const reader = new FileReader();
       reader.onload = (e) => {
         if (typeof e.target?.result === "string") {
-          setFilePreview(e.target.result);
+          setFile(file, e.target.result); // ✅ Save file + preview globally
+          router.push("/post");
         }
       };
-      reader.readAsDataURL(files[0]);
-      router.push("/post");
+      reader.readAsDataURL(file);
     }
   }
   const actions = [

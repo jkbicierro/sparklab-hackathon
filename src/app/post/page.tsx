@@ -12,9 +12,11 @@ import { toast } from "sonner";
 import LocationPicker from "@/components/ui/locationPicker";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
+import { useFileStore } from "@/store/useFileStore";
 
 export default function PostPage() {
   const supabase = createClient();
+  const { file, preview, clear } = useFileStore();
   const [userId, setUserId] = useState<string>("");
   const router = useRouter();
   useEffect(() => {
@@ -41,14 +43,16 @@ export default function PostPage() {
 
   const [desc, setDesc] = useState("");
 
-  const [long, setLong] = useState<number>();
-  const [lat, setLat] = useState<number>();
-
   const [files, setFiles] = useState<File[] | undefined>();
   const [filePreview, setFilePreview] = useState<string | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
-  // Location Select
+
+  useEffect(() => {
+    if (file && preview) {
+      setFiles([file]);
+      setFilePreview(preview);
+    }
+  }, [file, preview]);
 
   // File handler
   function HandleFiles(event: React.ChangeEvent<HTMLInputElement>) {
