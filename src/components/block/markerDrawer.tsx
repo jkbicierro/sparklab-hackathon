@@ -42,10 +42,12 @@ export default function MarkerDrawer({ open, setOpen, post, ad, type }: DrawerSt
           <div>
             {/* User Profile */}
             <div className="flex items-center gap-5">
-              <AvatarSelector />
 
+            <Avatar>
+              <AvatarImage src={`https://hucsiehmwkqjkfxwxnfn.supabase.co/storage/v1/object/public/ads/${ad?.image_url}`} alt="Avater" />
+              </Avatar>
               <div className="flex flex-col">
-                <span>Anon</span>
+                <span>{ad?.business_name}</span>
                 <span className="text-xs text-slate-400">
                   {(() => {
                     const date = new Date(post?.created_at || "");
@@ -73,7 +75,7 @@ export default function MarkerDrawer({ open, setOpen, post, ad, type }: DrawerSt
             {/* Location & Report */}
             <div className="mt-5 space-x-3">
               <Badge>
-                <MapPin /> {post?.longitude}, {post?.latitude}
+                <MapPin /> {ad?.longitude}, {ad?.latitude}
               </Badge>
               <Badge>
                 Advertisement
