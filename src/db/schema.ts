@@ -42,8 +42,8 @@ export const posts = pgTable("posts", {
   created_at: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const advertistments = pgTable("advertistments", {
-  ads_id: uuid("advertistment_id").primaryKey().defaultRandom(),
+export const advertisements = pgTable("advertisements", {
+  ads_id: uuid("ads_id").primaryKey().defaultRandom(),
   business_name: varchar("business_name", { length: 255 }),
   description: text("description"),
   image_url: text("image_url"),
