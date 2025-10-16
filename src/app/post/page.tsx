@@ -173,7 +173,7 @@ export default function PostPage() {
 
   return (
     <>
-      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh bg-background flex flex-col overflow-y-scroll p-20 animate-in fade-in-0 duration-800">
+      <div className="z-99 fixed bottom-0 h-full w-full lg:h-dvh bg-background flex flex-col overflow-y-scroll p-3 lg:p-20 animate-in fade-in-0 duration-800">
         <div className="flex">
           <div
             onClick={() => router.push("/map")}

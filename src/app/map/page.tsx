@@ -58,11 +58,21 @@ export default function MapPage() {
   }, []);
 
   if (loading) {
-    return <div>Loading</div>;
+    return (
+      <div className="w-full h-screen  flex items-center justify-center ">
+        <Image
+          src={"/assets/vibebayan-logo.png"}
+          alt="VibeBayan Logo"
+          width={700}
+          height={700}
+          className="w-[120px] h-[120px] animate-pulse"
+        />
+      </div>
+    );
   }
   return (
     <>
-      <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row">
+      <div className="flex flex-col-reverse h-screen w-screen items-center justify-center lg:flex-row animate-in fade-in-0 duration-500">
         {/* Sidebar */}
         <div
           className={`z-5 fixed left-0 bottom-0 ${isFull ? "h-full" : "h-[200px]"} lg:h-full w-full lg:w-[400px] bg-background p-5  ${isFull ? "rounded-none" : "rounded-t-4xl"} lg:rounded-none   transition-all duration-500 ease-in-out`}
