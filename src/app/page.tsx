@@ -75,21 +75,6 @@ function NavBar() {
                 <NavigationMenuItem className={navigationMenuTriggerStyle()}>
                   Home
                 </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <NavigationMenuLink>Link</NavigationMenuLink>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Partners</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <NavigationMenuLink>Link</NavigationMenuLink>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem className={navigationMenuTriggerStyle()}>
-                  About VibeBayan
-                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
 

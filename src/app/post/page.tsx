@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+
 import { Button } from "@/components/ui/button";
 import AvatarSelector from "@/components/ui/randomized-avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { ChevronLeft, Image as Img, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
-import { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import LocationPicker from "@/components/ui/locationPicker";
@@ -19,6 +19,7 @@ export default function PostPage() {
   const { file, preview, clear } = useFileStore();
   const [userId, setUserId] = useState<string>("");
   const router = useRouter();
+
   useEffect(() => {
     async function getUser() {
       try {
@@ -26,15 +27,15 @@ export default function PostPage() {
         if (data.user) {
           setUserId(data.user.id);
           console.log(data.user.id);
+        } else {
+          router.push("/auth/login");
         }
       } catch (error) {
         console.log(error);
       }
     }
     getUser();
-  }, [supabase]);
-
-  console.log("test: ", userId);
+  }, [supabase, router]);
 
   // Form states
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
